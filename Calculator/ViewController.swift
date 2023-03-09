@@ -9,9 +9,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    //MARK: -Properties
+    //MARK: - Properties
     
     //view객체들
+    var logSignLabel: UILabel!
     var logLabel: UILabel!
     var inputLabel: UILabel!
     var interFaceView: UIView!
@@ -55,11 +56,16 @@ class ViewController: UIViewController {
     
     //이것들로 계산할거임
     var tempValue: Double = 0
-    //var symbol: String = "empty"
     var inputBuffer: String = "0"
     var logBuffer: String = ""
+    
+    //calculator
+    var resutlValue: Double?
+    var isShowResult: Bool = false
+    var isInitNum: Bool = true
+    
      
-    //MARK: -LifeCycle
+    //MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +79,7 @@ class ViewController: UIViewController {
         self.setTargetAction()
     }
 
-    //MARK: -Button Logic
+    //MARK: - Button Logic
     
     fileprivate func setTargetAction() {
         
@@ -106,7 +112,7 @@ class ViewController: UIViewController {
         self.dotButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         
         //equals
-        self.equalButton.addTarget(self, action: #selector(drawOutResult), for: .touchUpInside)
+        self.equalButton.addTarget(self, action: #selector(equalsClick), for: .touchUpInside)
     }
     
     //firstStack의 버튼들
@@ -115,22 +121,27 @@ class ViewController: UIViewController {
         case modOperatorButton:
             logBuffer.append(" % ")
             inputBuffer = ""
+            self.isShowResult = false
             updateResultLabel()
         case divisionOperatorButton:
             logBuffer.append(" / ")
             inputBuffer = ""
+            self.isShowResult = false
             updateResultLabel()
         case multiplicationOperatorButton:
             logBuffer.append(" * ")
             inputBuffer = ""
+            self.isShowResult = false
             updateResultLabel()
         case subtractionOperatorButton:
             logBuffer.append(" - ")
             inputBuffer = ""
+            self.isShowResult = false
             updateResultLabel()
         case additionOperatorButton:
             logBuffer.append(" + ")
             inputBuffer = ""
+            self.isShowResult = false
             updateResultLabel()
         //Literal ---------------------------------
         case dotButton:
@@ -138,46 +149,68 @@ class ViewController: UIViewController {
             logBuffer.append(".")
             updateResultLabel()
         case doubleZeroButton:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("00")
             logBuffer.append("00")
             updateResultLabel()
         case zeroButton:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("0")
             logBuffer.append("0")
             updateResultLabel()
         case button1:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("1")
             logBuffer.append("1")
             updateResultLabel()
         case button2:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("2")
             logBuffer.append("2")
             updateResultLabel()
         case button3:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("3")
             logBuffer.append("3")
             updateResultLabel()
         case button4:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("4")
             logBuffer.append("4")
             updateResultLabel()
         case button5:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("5")
             logBuffer.append("5")
             updateResultLabel()
         case button6:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("6")
             logBuffer.append("6")
             updateResultLabel()
         case button7:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("7")
             logBuffer.append("7")
             updateResultLabel()
         case button8:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("8")
             logBuffer.append("8")
             updateResultLabel()
         case button9:
+            if self.isInitNum {self.inputBuffer = ""}
+            self.isInitNum = false
             inputBuffer.append("9")
             logBuffer.append("9")
             updateResultLabel()
@@ -190,24 +223,66 @@ class ViewController: UIViewController {
     @objc func clickAC() {
         inputBuffer = ""
         logBuffer = ""
+        self.isShowResult = false
+        self.isInitNum = false
         updateResultLabel()
     }
     
-    @objc func drawOutResult() {
-        var tempNum: String = ""
-        
-        for value in logBuffer {
-            switch value{
-            case "%":
-                print("")
-            case "/":
-                print("")
-            case "+":
-                print("")
-            default:
-                tempNum.append(value)
-            }
+    @objc func equalsClick() {
+        self.resutlValue = self.calculator(logBuffer)
+        self.inputLabel.text = "\(String(describing: self.resutlValue ?? 0))"
+        if !isShowResult {
+            self.logBuffer.append(" = \(String(describing: self.resutlValue ?? 0))")
         }
+        self.inputLabel.text = "\(String(describing: self.resutlValue ?? 0))"
+        self.isShowResult = true
+        self.logLabel.text = self.logBuffer
+        //self.updateResultLabel()
+    }
+    
+    //MARK: Equal Algorithms
+    
+    func calculator(_ expression: String) -> Double? {
+        // 문자열을 공백 기준으로 분리하여 배열로 저장
+            let elements = expression.split(separator: " ")
+            // 연산자 우선순위 설정
+            let operators: [String] = ["*", "/", "+", "-"]
+            var result: Double = 0
+            var currentOperator: String?
+            
+            for element in elements {
+                // 현재 요소가 연산자인 경우
+                if operators.contains(String(element)) {
+                    currentOperator = String(element)
+                }
+                // 현재 요소가 숫자인 경우
+                else {
+                    let number = Double(element) ?? 0
+                    if let op = currentOperator {
+                        // 이전 연산자에 따라 계산 수행
+                        switch op {
+                        case "*":
+                            result *= number
+                        case "/":
+                            if number != 0 {
+                                result /= number
+                            } else {
+                                return nil // 0으로 나눌 수 없는 경우 nil 반환
+                            }
+                        case "+":
+                            result += number
+                        case "-":
+                            result -= number
+                        default:
+                            break
+                        }
+                        currentOperator = nil
+                    } else {
+                        result = number // 첫 번째 숫자인 경우
+                    }
+                }
+            }
+            return result
     }
     
     fileprivate func updateResultLabel() {
@@ -225,14 +300,21 @@ extension ViewController {
     
     fileprivate func setResultScreenView() {
         self.interFaceView.backgroundColor = .lightGray
+        self.setLogSignLabel()
         self.setLogLabel()
         self.setinputLabel()
     }
     
+    fileprivate func setLogSignLabel() {
+        self.logSignLabel.text = "Log: "
+        self.logSignLabel.textAlignment = .left
+        self.logSignLabel.font = UIFont.boldSystemFont(ofSize: 20)
+    }
+    
     fileprivate func setLogLabel() {
-        self.logLabel.text = "Log: "
+        self.logLabel.text = ""
         self.logLabel.textAlignment = .left
-        self.logLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        self.logLabel.font = UIFont.systemFont(ofSize: 20)
         
     }
     
@@ -313,11 +395,23 @@ extension ViewController {
         ])
     }
     
+    fileprivate func logSignLabelConstraint() {
+        self.logSignLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.logSignLabel.topAnchor.constraint(equalTo: self.interFaceView.topAnchor),
+            self.logSignLabel.leadingAnchor.constraint(equalTo: self.interFaceView.leadingAnchor,constant: 5),
+            self.logSignLabel.trailingAnchor.constraint(equalTo: self.logLabel.leadingAnchor),
+            self.logSignLabel.bottomAnchor.constraint(equalTo: self.inputLabel.topAnchor, constant: 5),
+            self.logSignLabel.heightAnchor.constraint(equalToConstant: 50),
+            self.logSignLabel.widthAnchor.constraint(equalToConstant: 45)
+        ])
+    }
+    
     fileprivate func logLabelConstraint() {
         self.logLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.logLabel.topAnchor.constraint(equalTo: self.interFaceView.topAnchor),
-            self.logLabel.leadingAnchor.constraint(equalTo: self.interFaceView.leadingAnchor, constant: 5),
+            self.logLabel.leadingAnchor.constraint(equalTo: self.logSignLabel.trailingAnchor),
             self.logLabel.trailingAnchor.constraint(equalTo: self.interFaceView.trailingAnchor),
             self.logLabel.bottomAnchor.constraint(equalTo: self.inputLabel.topAnchor, constant: 5),
             self.logLabel.heightAnchor.constraint(equalToConstant: 50)
@@ -414,7 +508,7 @@ extension ViewController: UITextFieldDelegate {
     }
 }
 
-//MARK: -ConfigureSubviewsCase
+//MARK: - ConfigureSubviewsCase
 
 extension ViewController: ConfigureSubviewsCase {
     func configureSubviews() {
@@ -425,6 +519,7 @@ extension ViewController: ConfigureSubviewsCase {
     
     func createSubviews() {
         //view객체들
+        logSignLabel = UILabel()
         logLabel = UILabel()
         inputLabel = UILabel()
         interFaceView = UIView()
@@ -469,6 +564,7 @@ extension ViewController: ConfigureSubviewsCase {
     
     func addSubviews() {
         self.view.addSubview(interFaceView)
+        self.interFaceView.addSubview(logSignLabel)
         self.interFaceView.addSubview(logLabel)
         self.interFaceView.addSubview(inputLabel)
         self.view.addSubview(buttonContainerView)
@@ -510,6 +606,7 @@ extension ViewController: SetupSubviewsLayouts {
 extension ViewController: SetupSubviewsConstraints {
     func setupSubviewsConstraints() {
         self.resultScreenViewConstraint()
+        self.logSignLabelConstraint()
         self.logLabelConstraint()
         self.resultLabelConstraint()
         self.buttonContainerConstraint()
