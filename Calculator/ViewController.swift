@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     //view객체들
     let logLabel = UILabel()
     let resultTextField = UITextField()
+    let interFaceView = UIView()
     let buttonContainerView = UIView()
     let firstStackView = UIStackView()
     let secondStackView = UIStackView()
@@ -65,8 +66,7 @@ class ViewController: UIViewController {
         self.view.backgroundColor = .lightGray
         
         //setlayout
-        self.setLogLabel()
-        self.setTextField()
+        self.setResultScreenView()
         self.setNormalButtonContainer()
         
         //setAction
@@ -156,11 +156,20 @@ class ViewController: UIViewController {
 
 extension ViewController {
     
+    fileprivate func setResultScreenView() {
+        self.interFaceView.backgroundColor = .green
+        self.view.addSubview(interFaceView)
+        self.resultScreenViewConstraint()
+        
+        self.setLogLabel()
+        self.setTextField()
+    }
+    
     fileprivate func setLogLabel() {
         self.logLabel.text = "Log: "
         self.logLabel.textAlignment = .left
         self.logLabel.font = UIFont.systemFont(ofSize: 20)
-        self.view.addSubview(logLabel)
+        self.interFaceView.addSubview(logLabel)
         self.logLabelConstraint()
     }
     
@@ -168,7 +177,7 @@ extension ViewController {
         resultTextField.text = "Result Text"
         resultTextField.backgroundColor = .lightGray
         resultTextField.font = UIFont.systemFont(ofSize: 25)
-        self.view.addSubview(resultTextField)
+        self.interFaceView.addSubview(resultTextField)
         self.textFieldConstraint()
     }
     
@@ -260,13 +269,25 @@ extension ViewController {
     
     //MARK: - Constraint Setting
     
+    //logLabel, resultTextField view안에 묶어서 다시 설계 할것
+    fileprivate func resultScreenViewConstraint() {
+        self.interFaceView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.interFaceView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.interFaceView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 3),
+            self.interFaceView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -3),
+            self.interFaceView.bottomAnchor.constraint(equalTo: self.buttonContainerView.topAnchor),
+            self.interFaceView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+    }
+    
     fileprivate func logLabelConstraint() {
         self.logLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.logLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.logLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 3),
-            self.logLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -3),
-            self.logLabel.bottomAnchor.constraint(equalTo: self.resultTextField.topAnchor),
+            self.logLabel.topAnchor.constraint(equalTo: self.interFaceView.topAnchor),
+            self.logLabel.leadingAnchor.constraint(equalTo: self.interFaceView.leadingAnchor),
+            self.logLabel.trailingAnchor.constraint(equalTo: self.interFaceView.trailingAnchor),
+            self.logLabel.bottomAnchor.constraint(equalTo: self.resultTextField.topAnchor, constant: 5),
             self.logLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
@@ -274,19 +295,19 @@ extension ViewController {
     fileprivate func textFieldConstraint() {
         self.resultTextField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.resultTextField.topAnchor.constraint(equalTo: self.logLabel.bottomAnchor),
-            self.resultTextField.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 3),
-            self.resultTextField.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -3),
-            self.resultTextField.heightAnchor.constraint(equalToConstant: 200)
+            self.resultTextField.topAnchor.constraint(equalTo: self.logLabel.bottomAnchor, constant: 5),
+            self.resultTextField.leadingAnchor.constraint(equalTo: self.interFaceView.leadingAnchor),
+            self.resultTextField.trailingAnchor.constraint(equalTo: self.interFaceView.trailingAnchor),
+            self.resultTextField.bottomAnchor.constraint(equalTo: self.interFaceView.bottomAnchor),
+            self.resultTextField.heightAnchor.constraint(equalToConstant: 150)
         ])
-        self.resultTextField.layer.cornerRadius = 15
-        self.resultTextField.layer.masksToBounds = true
     }
+    // -- 여기까지 수정해야됨
     
     fileprivate func buttonContainerConstraint() {
         self.buttonContainerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.buttonContainerView.topAnchor.constraint(equalTo: self.resultTextField.bottomAnchor),
+            self.buttonContainerView.topAnchor.constraint(equalTo: self.interFaceView.bottomAnchor),
             self.buttonContainerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             self.buttonContainerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             self.buttonContainerView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
@@ -344,7 +365,6 @@ extension ViewController {
     }
     
     fileprivate func equalButtonConstraint() {
-        
         self.equalButton.translatesAutoresizingMaskIntoConstraints = false
         self.equalButton.topAnchor.constraint(equalTo: self.thirdStackView.bottomAnchor, constant: 10).isActive = true
         self.equalButton.leadingAnchor.constraint(equalTo: self.fourthStackView.trailingAnchor, constant: 10).isActive = true
