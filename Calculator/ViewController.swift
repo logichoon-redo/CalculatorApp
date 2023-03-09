@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     //view객체들
     var logLabel: UILabel!
-    var resultTextField: UITextField!
+    var inputLabel: UILabel!
     var interFaceView: UIView!
     var buttonContainerView: UIView!
     var firstStackView: UIStackView!
@@ -55,8 +55,9 @@ class ViewController: UIViewController {
     
     //이것들로 계산할거임
     var tempValue: Double = 0
-    var symbol: String = "empty"
-    var inputBuffer = [String]()
+    //var symbol: String = "empty"
+    var inputBuffer: String = "0"
+    var logBuffer: String = ""
      
     //MARK: -LifeCycle
     
@@ -77,7 +78,7 @@ class ViewController: UIViewController {
     fileprivate func setTargetAction() {
         
         //firstStack
-        self.ACButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
+        self.ACButton.addTarget(self, action: #selector(clickAC), for: .touchUpInside)
         self.modOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.divisionOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.multiplicationOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
@@ -103,50 +104,117 @@ class ViewController: UIViewController {
         self.zeroButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.doubleZeroButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.dotButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
+        
+        //equals
+        self.equalButton.addTarget(self, action: #selector(drawOutResult), for: .touchUpInside)
     }
     
     //firstStack의 버튼들
     @objc fileprivate func clickButton(_ sender: UIButton) {
         switch sender{
         case modOperatorButton:
-            inputBuffer.append("%")
+            logBuffer.append(" % ")
+            inputBuffer = ""
+            updateResultLabel()
         case divisionOperatorButton:
-            inputBuffer.append("/")
+            logBuffer.append(" / ")
+            inputBuffer = ""
+            updateResultLabel()
         case multiplicationOperatorButton:
-            inputBuffer.append("*")
+            logBuffer.append(" * ")
+            inputBuffer = ""
+            updateResultLabel()
         case subtractionOperatorButton:
-            inputBuffer.append("-")
+            logBuffer.append(" - ")
+            inputBuffer = ""
+            updateResultLabel()
         case additionOperatorButton:
-            inputBuffer.append("+")
+            logBuffer.append(" + ")
+            inputBuffer = ""
+            updateResultLabel()
+        //Literal ---------------------------------
         case dotButton:
             inputBuffer.append(".")
+            logBuffer.append(".")
+            updateResultLabel()
         case doubleZeroButton:
             inputBuffer.append("00")
+            logBuffer.append("00")
+            updateResultLabel()
         case zeroButton:
             inputBuffer.append("0")
+            logBuffer.append("0")
+            updateResultLabel()
         case button1:
             inputBuffer.append("1")
+            logBuffer.append("1")
+            updateResultLabel()
         case button2:
             inputBuffer.append("2")
+            logBuffer.append("2")
+            updateResultLabel()
         case button3:
             inputBuffer.append("3")
+            logBuffer.append("3")
+            updateResultLabel()
         case button4:
             inputBuffer.append("4")
+            logBuffer.append("4")
+            updateResultLabel()
         case button5:
             inputBuffer.append("5")
+            logBuffer.append("5")
+            updateResultLabel()
         case button6:
             inputBuffer.append("6")
+            logBuffer.append("6")
+            updateResultLabel()
         case button7:
             inputBuffer.append("7")
+            logBuffer.append("7")
+            updateResultLabel()
         case button8:
             inputBuffer.append("8")
+            logBuffer.append("8")
+            updateResultLabel()
         case button9:
             inputBuffer.append("9")
+            logBuffer.append("9")
+            updateResultLabel()
         default:
             print("예외값이 inputBuffer에 입력됨")
             break
         }
     }
+    
+    @objc func clickAC() {
+        inputBuffer = ""
+        logBuffer = ""
+        updateResultLabel()
+    }
+    
+    @objc func drawOutResult() {
+        var tempNum: String = ""
+        
+        for value in logBuffer {
+            switch value{
+            case "%":
+                print("")
+            case "/":
+                print("")
+            case "+":
+                print("")
+            default:
+                tempNum.append(value)
+            }
+        }
+    }
+    
+    fileprivate func updateResultLabel() {
+        self.inputLabel.text = self.inputBuffer
+        self.logLabel.text = self.logBuffer
+    }
+    
     
     
 }
@@ -156,21 +224,24 @@ class ViewController: UIViewController {
 extension ViewController {
     
     fileprivate func setResultScreenView() {
-        self.interFaceView.backgroundColor = .green
+        self.interFaceView.backgroundColor = .lightGray
         self.setLogLabel()
-        self.setTextField()
+        self.setinputLabel()
     }
     
     fileprivate func setLogLabel() {
         self.logLabel.text = "Log: "
         self.logLabel.textAlignment = .left
-        self.logLabel.font = UIFont.systemFont(ofSize: 20)
+        self.logLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        
     }
     
-    fileprivate func setTextField() {
-        resultTextField.text = "Result Text"
-        resultTextField.backgroundColor = .lightGray
-        resultTextField.font = UIFont.systemFont(ofSize: 25)
+    fileprivate func setinputLabel() {
+        inputLabel.text = "0"
+        inputLabel.backgroundColor = .lightGray
+        inputLabel.font = UIFont.systemFont(ofSize: 40)
+        inputLabel.textAlignment = .right
+        
     }
     
     fileprivate func setNormalButtonContainer() {
@@ -246,21 +317,21 @@ extension ViewController {
         self.logLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.logLabel.topAnchor.constraint(equalTo: self.interFaceView.topAnchor),
-            self.logLabel.leadingAnchor.constraint(equalTo: self.interFaceView.leadingAnchor),
+            self.logLabel.leadingAnchor.constraint(equalTo: self.interFaceView.leadingAnchor, constant: 5),
             self.logLabel.trailingAnchor.constraint(equalTo: self.interFaceView.trailingAnchor),
-            self.logLabel.bottomAnchor.constraint(equalTo: self.resultTextField.topAnchor, constant: 5),
+            self.logLabel.bottomAnchor.constraint(equalTo: self.inputLabel.topAnchor, constant: 5),
             self.logLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
-    fileprivate func textFieldConstraint() {
-        self.resultTextField.translatesAutoresizingMaskIntoConstraints = false
+    fileprivate func resultLabelConstraint() {
+        self.inputLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.resultTextField.topAnchor.constraint(equalTo: self.logLabel.bottomAnchor, constant: 5),
-            self.resultTextField.leadingAnchor.constraint(equalTo: self.interFaceView.leadingAnchor),
-            self.resultTextField.trailingAnchor.constraint(equalTo: self.interFaceView.trailingAnchor),
-            self.resultTextField.bottomAnchor.constraint(equalTo: self.interFaceView.bottomAnchor),
-            self.resultTextField.heightAnchor.constraint(equalToConstant: 150)
+            self.inputLabel.topAnchor.constraint(equalTo: self.logLabel.bottomAnchor, constant: 5),
+            self.inputLabel.leadingAnchor.constraint(equalTo: self.interFaceView.leadingAnchor),
+            self.inputLabel.trailingAnchor.constraint(equalTo: self.interFaceView.trailingAnchor, constant: -10),
+            self.inputLabel.bottomAnchor.constraint(equalTo: self.interFaceView.bottomAnchor),
+            self.inputLabel.heightAnchor.constraint(equalToConstant: 150)
         ])
     }
     // -- 여기까지 수정해야됨
@@ -337,6 +408,14 @@ extension ViewController {
     
 }
 
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return false
+    }
+}
+
+//MARK: -ConfigureSubviewsCase
+
 extension ViewController: ConfigureSubviewsCase {
     func configureSubviews() {
         self.createSubviews()
@@ -347,7 +426,7 @@ extension ViewController: ConfigureSubviewsCase {
     func createSubviews() {
         //view객체들
         logLabel = UILabel()
-        resultTextField = UITextField()
+        inputLabel = UILabel()
         interFaceView = UIView()
         buttonContainerView = UIView()
         firstStackView = UIStackView()
@@ -391,14 +470,12 @@ extension ViewController: ConfigureSubviewsCase {
     func addSubviews() {
         self.view.addSubview(interFaceView)
         self.interFaceView.addSubview(logLabel)
-        self.interFaceView.addSubview(resultTextField)
+        self.interFaceView.addSubview(inputLabel)
         self.view.addSubview(buttonContainerView)
-        self.buttonContainerView.addSubview(firstStackView)
-        self.buttonContainerView.addSubview(secondStackView)
-        self.buttonContainerView.addSubview(thirdStackView)
-        self.buttonContainerView.addSubview(fourthStackView)
-        self.buttonContainerView.addSubview(fifthStackView)
-        self.buttonContainerView.addSubview(equalButton)
+        _=[firstStackView, secondStackView, thirdStackView, fourthStackView, fifthStackView, equalButton].map{
+            self.buttonContainerView.addSubview($0)
+        }
+        
         _=[ACButton, modOperatorButton,
            divisionOperatorButton, multiplicationOperatorButton].map{
             self.firstStackView.addArrangedSubview($0)
@@ -434,7 +511,7 @@ extension ViewController: SetupSubviewsConstraints {
     func setupSubviewsConstraints() {
         self.resultScreenViewConstraint()
         self.logLabelConstraint()
-        self.textFieldConstraint()
+        self.resultLabelConstraint()
         self.buttonContainerConstraint()
         self.stackViewConstraint()
         self.equalButtonConstraint()
