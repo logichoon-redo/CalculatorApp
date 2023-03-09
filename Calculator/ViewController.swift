@@ -12,46 +12,46 @@ class ViewController: UIViewController {
     //MARK: -Properties
     
     //view객체들
-    let logLabel = UILabel()
-    let resultTextField = UITextField()
-    let interFaceView = UIView()
-    let buttonContainerView = UIView()
-    let firstStackView = UIStackView()
-    let secondStackView = UIStackView()
-    let thirdStackView = UIStackView()
-    let fourthStackView = UIStackView()
-    let fifthStackView = UIStackView()
+    var logLabel: UILabel!
+    var resultTextField: UITextField!
+    var interFaceView: UIView!
+    var buttonContainerView: UIView!
+    var firstStackView: UIStackView!
+    var secondStackView: UIStackView!
+    var thirdStackView: UIStackView!
+    var fourthStackView: UIStackView!
+    var fifthStackView: UIStackView!
     
     //firstStack안에 있는 버튼
-    let ACButton = UIButton()
-    let modOperatorButton = UIButton()
-    let divisionOperatorButton = UIButton()
-    let multiplicationOperatorButton = UIButton()
+    var ACButton: UIButton!
+    var modOperatorButton: UIButton!
+    var divisionOperatorButton: UIButton!
+    var multiplicationOperatorButton: UIButton!
     
     //secondStack안에 있는 버튼
-    let button7 = UIButton()
-    let button8 = UIButton()
-    let button9 = UIButton()
-    let subtractionOperatorButton = UIButton()
+    var button7: UIButton!
+    var button8: UIButton!
+    var button9: UIButton!
+    var subtractionOperatorButton: UIButton!
     
     //thirdStack안에 있는 버튼
-    let button4 = UIButton()
-    let button5 = UIButton()
-    let button6 = UIButton()
-    let additionOperatorButton = UIButton()
+    var button4: UIButton!
+    var button5: UIButton!
+    var button6: UIButton!
+    var additionOperatorButton: UIButton!
     
     //fourthStack안에 있는 버튼
-    let button1 = UIButton()
-    let button2 = UIButton()
-    let button3 = UIButton()
+    var button1: UIButton!
+    var button2: UIButton!
+    var button3: UIButton!
     
     //fifthStack안에 있는 버튼
-    let zeroButton = UIButton()
-    let doubleZeroButton = UIButton()
-    let dotButton = UIButton()
+    var zeroButton: UIButton!
+    var doubleZeroButton: UIButton!
+    var dotButton: UIButton!
     
     //Equal(=) 버튼
-    let equalButton = UIButton()
+    var equalButton: UIButton!
     
     //이것들로 계산할거임
     var tempValue: Double = 0
@@ -66,8 +66,7 @@ class ViewController: UIViewController {
         self.view.backgroundColor = .lightGray
         
         //setlayout
-        self.setResultScreenView()
-        self.setNormalButtonContainer()
+        self.configureSubviews()
         
         //setAction
         self.setTargetAction()
@@ -158,9 +157,6 @@ extension ViewController {
     
     fileprivate func setResultScreenView() {
         self.interFaceView.backgroundColor = .green
-        self.view.addSubview(interFaceView)
-        self.resultScreenViewConstraint()
-        
         self.setLogLabel()
         self.setTextField()
     }
@@ -169,28 +165,15 @@ extension ViewController {
         self.logLabel.text = "Log: "
         self.logLabel.textAlignment = .left
         self.logLabel.font = UIFont.systemFont(ofSize: 20)
-        self.interFaceView.addSubview(logLabel)
-        self.logLabelConstraint()
     }
     
     fileprivate func setTextField() {
         resultTextField.text = "Result Text"
         resultTextField.backgroundColor = .lightGray
         resultTextField.font = UIFont.systemFont(ofSize: 25)
-        self.interFaceView.addSubview(resultTextField)
-        self.textFieldConstraint()
     }
     
     fileprivate func setNormalButtonContainer() {
-        self.view.addSubview(buttonContainerView)
-        self.buttonContainerConstraint()
-        
-        self.buttonContainerView.addSubview(firstStackView)
-        self.buttonContainerView.addSubview(secondStackView)
-        self.buttonContainerView.addSubview(thirdStackView)
-        self.buttonContainerView.addSubview(fourthStackView)
-        self.buttonContainerView.addSubview(fifthStackView)
-        self.buttonContainerView.addSubview(equalButton)
         equalButton.setTitle("=", for: .normal)
         equalButton.backgroundColor = .systemBlue
         equalButton.titleLabel?.font = UIFont.systemFont(ofSize: 25)
@@ -204,27 +187,6 @@ extension ViewController {
         self.stackViewSet(stack: thirdStackView)
         self.stackViewSet(stack: fourthStackView)
         self.stackViewSet(stack: fifthStackView)
-        
-        self.stackViewConstraint()
-        self.equalButtonConstraint()
-        
-        //stack에 button추가
-        _=[ACButton, modOperatorButton,
-           divisionOperatorButton, multiplicationOperatorButton].map{
-            self.firstStackView.addArrangedSubview($0)
-        }
-        _=[button7, button8, button9, subtractionOperatorButton].map{
-            self.secondStackView.addArrangedSubview($0)
-        }
-        _=[button4, button5, button6, additionOperatorButton].map{
-            self.thirdStackView.addArrangedSubview($0)
-        }
-        _=[button1, button2, button3].map{
-            self.fourthStackView.addArrangedSubview($0)
-        }
-        _=[zeroButton, doubleZeroButton, dotButton].map{
-            self.fifthStackView.addArrangedSubview($0)
-        }
         
         //Button속성 설정
         self.setNormalButton(button: ACButton, string: "AC", color: .systemGray)
@@ -264,7 +226,6 @@ extension ViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
         button.layer.cornerRadius = 20
     }
-    
     
     
     //MARK: - Constraint Setting
@@ -374,4 +335,108 @@ extension ViewController {
         self.equalButton.widthAnchor.constraint(equalTo: self.buttonContainerView.widthAnchor, multiplier: 0.25, constant: -10).isActive = true
     }
     
+}
+
+extension ViewController: ConfigureSubviewsCase {
+    func configureSubviews() {
+        self.createSubviews()
+        self.addSubviews()
+        self.setupLayouts()
+    }
+    
+    func createSubviews() {
+        //view객체들
+        logLabel = UILabel()
+        resultTextField = UITextField()
+        interFaceView = UIView()
+        buttonContainerView = UIView()
+        firstStackView = UIStackView()
+        secondStackView = UIStackView()
+        thirdStackView = UIStackView()
+        fourthStackView = UIStackView()
+        fifthStackView = UIStackView()
+        
+        //firstStack안에 있는 버튼
+        ACButton = UIButton()
+        modOperatorButton = UIButton()
+        divisionOperatorButton = UIButton()
+        multiplicationOperatorButton = UIButton()
+        
+        //secondStack안에 있는 버튼
+        button7 = UIButton()
+        button8 = UIButton()
+        button9 = UIButton()
+        subtractionOperatorButton = UIButton()
+        
+        //thirdStack안에 있는 버튼
+        button4 = UIButton()
+        button5 = UIButton()
+        button6 = UIButton()
+        additionOperatorButton = UIButton()
+        
+        //fourthStack안에 있는 버튼
+        button1 = UIButton()
+        button2 = UIButton()
+        button3 = UIButton()
+        
+        //fifthStack안에 있는 버튼
+        zeroButton = UIButton()
+        doubleZeroButton = UIButton()
+        dotButton = UIButton()
+        
+        //Equal(=) 버튼
+        equalButton = UIButton()
+    }
+    
+    func addSubviews() {
+        self.view.addSubview(interFaceView)
+        self.interFaceView.addSubview(logLabel)
+        self.interFaceView.addSubview(resultTextField)
+        self.view.addSubview(buttonContainerView)
+        self.buttonContainerView.addSubview(firstStackView)
+        self.buttonContainerView.addSubview(secondStackView)
+        self.buttonContainerView.addSubview(thirdStackView)
+        self.buttonContainerView.addSubview(fourthStackView)
+        self.buttonContainerView.addSubview(fifthStackView)
+        self.buttonContainerView.addSubview(equalButton)
+        _=[ACButton, modOperatorButton,
+           divisionOperatorButton, multiplicationOperatorButton].map{
+            self.firstStackView.addArrangedSubview($0)
+        }
+        _=[button7, button8, button9, subtractionOperatorButton].map{
+            self.secondStackView.addArrangedSubview($0)
+        }
+        _=[button4, button5, button6, additionOperatorButton].map{
+            self.thirdStackView.addArrangedSubview($0)
+        }
+        _=[button1, button2, button3].map{
+            self.fourthStackView.addArrangedSubview($0)
+        }
+        _=[zeroButton, doubleZeroButton, dotButton].map{
+            self.fifthStackView.addArrangedSubview($0)
+        }
+    }
+    
+    func setupLayouts() {
+        self.setupSubviewsLayouts()
+        self.setupSubviewsConstraints()
+    }
+}
+
+extension ViewController: SetupSubviewsLayouts {
+    func setupSubviewsLayouts() {
+        self.setResultScreenView()
+        self.setNormalButtonContainer()
+    }
+}
+
+extension ViewController: SetupSubviewsConstraints {
+    func setupSubviewsConstraints() {
+        self.resultScreenViewConstraint()
+        self.logLabelConstraint()
+        self.textFieldConstraint()
+        self.buttonContainerConstraint()
+        self.stackViewConstraint()
+        self.equalButtonConstraint()
+    }
 }
