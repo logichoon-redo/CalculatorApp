@@ -60,7 +60,7 @@ class ViewController: UIViewController {
     var logBuffer: String = ""
     
     //calculator
-    var resutlValue: Double?
+    var resultValue: Double?
     var isShowResult: Bool = false
     var isInitNum: Bool = true
     
@@ -77,6 +77,10 @@ class ViewController: UIViewController {
         
         //setAction
         self.setTargetAction()
+        
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(labelSwiped))
+             inputLabel.addGestureRecognizer(swipeGesture)
+             inputLabel.isUserInteractionEnabled = true
     }
 
     //MARK: - Button Logic
@@ -113,6 +117,7 @@ class ViewController: UIViewController {
         
         //equals
         self.equalButton.addTarget(self, action: #selector(equalsClick), for: .touchUpInside)
+        
     }
     
     //firstStack의 버튼들
@@ -229,61 +234,107 @@ class ViewController: UIViewController {
     }
     
     @objc func equalsClick() {
-        self.resutlValue = self.calculator(logBuffer)
-        self.inputLabel.text = "\(String(describing: self.resutlValue ?? 0))"
+        print("input \(logBuffer)")
+        self.resultValue = self.calculate(logBuffer)
+        print("output \(resultValue!)")
+        
+        self.inputLabel.text = "\(String(describing: self.resultValue ?? 0))"
+        
         if !isShowResult {
-            self.logBuffer.append(" = \(String(describing: self.resutlValue ?? 0))")
+            self.logBuffer.append(" = \(String(describing: self.resultValue ?? 0))")
         }
-        self.inputLabel.text = "\(String(describing: self.resutlValue ?? 0))"
+        //self.inputLabel.text = "\(String(describing: self.resultValue ?? 0))"
+        
         self.isShowResult = true
         self.logLabel.text = self.logBuffer
+        self.inputBuffer = ""
+        self.logBuffer = ""
         //self.updateResultLabel()
     }
     
     //MARK: Equal Algorithms
     
-    func calculator(_ expression: String) -> Double? {
-        // 문자열을 공백 기준으로 분리하여 배열로 저장
-            let elements = expression.split(separator: " ")
-            // 연산자 우선순위 설정
-            let operators: [String] = ["*", "/", "+", "-"]
-            var result: Double = 0
-            var currentOperator: String?
-            
-            for element in elements {
-                // 현재 요소가 연산자인 경우
-                if operators.contains(String(element)) {
-                    currentOperator = String(element)
+    func calculate(_ expression: String) -> Double {
+        var result = 0.0
+        var currentOperator: Character = "+"
+        var currentNumber = ""
+        var numbers: [Double] = []
+        
+        for character in expression {
+            switch character {
+            case "+", "-":
+                if !currentNumber.isEmpty {
+                    let number = Double(currentNumber)!
+                    numbers.append(number)
+                    currentNumber = ""
                 }
-                // 현재 요소가 숫자인 경우
-                else {
-                    let number = Double(element) ?? 0
-                    if let op = currentOperator {
-                        // 이전 연산자에 따라 계산 수행
-                        switch op {
-                        case "*":
-                            result *= number
-                        case "/":
-                            if number != 0 {
-                                result /= number
-                            } else {
-                                return nil // 0으로 나눌 수 없는 경우 nil 반환
-                            }
-                        case "+":
-                            result += number
-                        case "-":
-                            result -= number
-                        default:
-                            break
-                        }
-                        currentOperator = nil
-                    } else {
-                        result = number // 첫 번째 숫자인 경우
-                    }
+                currentOperator = character
+                
+            case "*", "/", "%":
+                if !currentNumber.isEmpty {
+                    let number = Double(currentNumber)!
+                    numbers.append(number)
+                    currentNumber = ""
                 }
+                currentOperator = character
+                
+            case "0"..."9", ".":
+                currentNumber.append(character)
+                
+            default:
+                break
             }
-            return result
+        }
+        
+        if !currentNumber.isEmpty {
+            let number = Double(currentNumber)!
+            numbers.append(number)
+        }
+        
+        var i = 0
+        while i < numbers.count {
+            let number = numbers[i]
+            if currentOperator == "*" {
+                if i + 1 < numbers.count {
+                    let nextNumber = numbers[i+1]
+                    result = number * nextNumber
+                    numbers[i+1] = result
+                    i += 1
+                }
+            } else if currentOperator == "/" {
+                if i + 1 < numbers.count {
+                    let nextNumber = numbers[i+1]
+                    result = number / nextNumber
+                    numbers[i+1] = result
+                    i += 1
+                }
+            } else if currentOperator == "%" {
+                if i + 1 < numbers.count {
+                    let nextNumber = numbers[i+1]
+                    result = number.truncatingRemainder(dividingBy: nextNumber)
+                    numbers[i+1] = result
+                    i += 1
+                }
+            } else {
+                result = number
+            }
+            i += 1
+        }
+        
+        return numbers.reduce(0, { $0 + $1 * (currentOperator == "-" ? -1 : 1) })
     }
+    
+    //Label Logic
+    
+    @objc func labelSwiped() {
+        if !inputBuffer.isEmpty {
+            self.inputBuffer.removeLast()
+            self.logBuffer.removeLast()
+            self.updateResultLabel()
+            print("called labelSwiped")
+        }
+    }
+
     
     fileprivate func updateResultLabel() {
         self.inputLabel.text = self.inputBuffer
