@@ -358,12 +358,14 @@ extension ViewController {
     
     fileprivate func setLogSignLabel() {
         self.logSignLabel.text = "Log: "
+        self.logSignLabel.tintColor = .black
         self.logSignLabel.textAlignment = .left
         self.logSignLabel.font = UIFont.boldSystemFont(ofSize: 20)
     }
     
     fileprivate func setLogLabel() {
         self.logLabel.text = ""
+        self.logLabel.tintColor = .black
         self.logLabel.textAlignment = .left
         self.logLabel.font = UIFont.systemFont(ofSize: 20)
         
@@ -372,7 +374,8 @@ extension ViewController {
     fileprivate func setinputLabel() {
         inputLabel.text = "0"
         inputLabel.backgroundColor = .lightGray
-        inputLabel.font = UIFont.systemFont(ofSize: 40)
+        inputLabel.tintColor = .black
+        inputLabel.font = UIFont.boldSystemFont(ofSize: 40)
         inputLabel.textAlignment = .right
         
     }
