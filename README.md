@@ -1,3 +1,3 @@
 # CalculatorApp
 계산기앱
-![계산기앱 구동시뮬레이션 화면](./singlebungle1472-20221106-111604-000.gif.gif)
+![계산기앱 구동시뮬레이션 화면](Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47)
