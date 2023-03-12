@@ -25,6 +25,17 @@ class CalcLogTableViewController: UITableViewController {
         self.fetchData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.register(CalcLogTableViewCell.self, forCellReuseIdentifier: "CalcLogTableViewCell")
+        
+        self.fetchData()
+        self.tableView.reloadData()
+    }
+    
+    //Care Data
+    
     func fetchData() {
         let fetchRequest: NSFetchRequest<CalcLog> = CalcLog.fetchRequest()
         
@@ -49,8 +60,13 @@ class CalcLogTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "CalcLogTableViewCell") as? CalcLogTableViewCell{
-            cell.logValue.text = logList[indexPath.row].log
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "CalcLogTableViewCell", for: indexPath) as? CalcLogTableViewCell{
+            
+            if let hasLog = logList[indexPath.row].log{
+                cell.logValue.text = hasLog
+            }else{
+                cell.logValue.text = "noLogData"
+            }
             
             if let hasDate = logList[indexPath.row].date {
                 let formatter = DateFormatter()
@@ -58,10 +74,9 @@ class CalcLogTableViewController: UITableViewController {
                 let dataString = formatter.string(from: hasDate)
                 cell.dateValue.text = dataString
             }else{
-                cell.dateValue.text = ""
+                cell.dateValue.text = "noLogData"
             }
             
-            print("will cellForRowAt")
             return cell
         }else{
             let cell = CalcLogTableViewCell(style: .default, reuseIdentifier: "CalcLogTableViewCell")

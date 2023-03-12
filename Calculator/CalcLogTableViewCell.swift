@@ -9,10 +9,10 @@ import UIKit
 
 class CalcLogTableViewCell: UITableViewCell {
 
-    var logLabel: UILabel!
-    var logValue: UILabel!
-    var dateLabel: UILabel!
-    var dateValue: UILabel!
+    var logLabel = UILabel()
+    var logValue = UILabel()
+    var dateLabel = UILabel()
+    var dateValue = UILabel()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -38,10 +38,7 @@ extension CalcLogTableViewCell: ConfigureSubviewsCase {
     }
     
     func createSubviews() {
-        logLabel = UILabel()
-        logValue = UILabel()
-        dateLabel = UILabel()
-        dateValue = UILabel()
+       
     }
     
     func addSubviews() {
@@ -52,7 +49,7 @@ extension CalcLogTableViewCell: ConfigureSubviewsCase {
     }
     
     func setupLayouts() {
-        //setupSubviewsLayouts()
+        setupSubviewsLayouts()
         setupSubviewsConstraints()
     }
     
