@@ -74,7 +74,7 @@ class CalcLogTableViewController: UITableViewController {
                 let dataString = formatter.string(from: hasDate)
                 cell.dateValue.text = dataString
             }else{
-                cell.dateValue.text = "noLogData"
+                cell.dateValue.text = "noDateData"
             }
             
             return cell

@@ -14,16 +14,15 @@ class CalcLogTableViewCell: UITableViewCell {
     var dateLabel = UILabel()
     var dateValue = UILabel()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        configureSubviews()
-        print("called configureSubviews" )
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.configureSubviews()
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
         
     }
     
@@ -71,6 +70,7 @@ extension CalcLogTableViewCell: SetupSubviewsConstraints {
             logLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             logLabel.trailingAnchor.constraint(equalTo: logValue.leadingAnchor, constant: -10),
             logLabel.bottomAnchor.constraint(equalTo: dateLabel.topAnchor, constant: -5),
+            logLabel.widthAnchor.constraint(equalToConstant: 50)
         ])
         
         logValue.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +86,8 @@ extension CalcLogTableViewCell: SetupSubviewsConstraints {
             dateLabel.topAnchor.constraint(equalTo: logLabel.bottomAnchor, constant: 5),
             dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             dateLabel.trailingAnchor.constraint(equalTo: logValue.leadingAnchor, constant: -10),
-            dateLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10)
+            dateLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            dateLabel.widthAnchor.constraint(equalToConstant: 50)
         ])
         
         dateValue.translatesAutoresizingMaskIntoConstraints = false
