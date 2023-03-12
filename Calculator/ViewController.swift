@@ -349,7 +349,7 @@ class ViewController: UIViewController {
         self.present(logTableVC, animated: true)
     }
     
-    //Core Data
+    //MARK: - Core Data
     
     fileprivate func saveLog() {
         

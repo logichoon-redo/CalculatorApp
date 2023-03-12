@@ -35,7 +35,7 @@ class CalcLogTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    //Care Data
+    //MARK: - Care Data
     
     func fetchData() {
         let fetchRequest: NSFetchRequest<CalcLog> = CalcLog.fetchRequest()
@@ -87,17 +87,40 @@ class CalcLogTableViewController: UITableViewController {
         
     }
     
+    //cell delete
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            var loglist = [indexPath]
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
             
-            loglist.remove(at: indexPath.row)
+            let loglist = logList[indexPath.row]
+            
+            context.delete(loglist)
+            
+            do{
+                try context.save()
+            }catch{
+                print(error)
+            }
+            
+            logList.remove(at: indexPath.row)
             
             tableView.beginUpdates()
-            tableView.deleteRows(at: loglist, with: .right)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
         }
     }
     
+//    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        
+//        let delete = UIContextualAction(style: .normal, title: "삭제") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
+//            print("삭제됨")
+//            success(true)
+//        }
+//        
+//        delete.backgroundColor = .systemRed
+//        
+//        return UISwipeActionsConfiguration(actions: [delete])
+//    }
     
 }
