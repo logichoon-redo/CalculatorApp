@@ -342,24 +342,37 @@ class ViewController: UIViewController {
             print("called labelSwiped")
         }
     }
-
+    
     @objc func showLogTable() {
         let logTableVC = CalcLogTableViewController()
         
         self.present(logTableVC, animated: true)
     }
     
+    //Core Data
+    
     fileprivate func saveLog() {
-        guard let entityDes = NSEntityDescription.entity(forEntityName: "CalcLog", in: context) else {return}
         
-        guard let object = NSManagedObject(entity: entityDes, insertInto: context) as? CalcLog else {return}
+//        guard let entityDes = NSEntityDescription.entity(forEntityName: "CalcLog", in: context) else {return}
+//
+//        guard let object = NSManagedObject(entity: entityDes, insertInto: context) as? CalcLog else {return}
+//
+//        object.log = logBuffer
+//        object.date = Date()
+//        object.uuid = UUID()
+//
+//        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+//        print("called showLogTable")
         
-        object.log = logBuffer
-        object.date = Date()
-        object.uuid = UUID()
-        
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-        print("called showLogTable")
+        let newLog = CalcLog(context: context)
+            newLog.log = logBuffer
+            
+            do {
+                try context.save()
+            } catch {
+                print("Failed saving log with error: \(error)")
+            }
+
     }
     
     fileprivate func updateResultLabel() {

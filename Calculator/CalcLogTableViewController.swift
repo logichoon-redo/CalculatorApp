@@ -49,21 +49,26 @@ class CalcLogTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CalcLogTableViewCell") as! CalcLogTableViewCell
-        
-        cell.logValue.text = logList[indexPath.row].log
-        
-        if let hasDate = logList[indexPath.row].date {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
-            let dataString = formatter.string(from: hasDate)
-            cell.dateValue.text = dataString
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "CalcLogTableViewCell") as? CalcLogTableViewCell{
+            cell.logValue.text = logList[indexPath.row].log
+            
+            if let hasDate = logList[indexPath.row].date {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+                let dataString = formatter.string(from: hasDate)
+                cell.dateValue.text = dataString
+            }else{
+                cell.dateValue.text = ""
+            }
+            
+            print("will cellForRowAt")
+            return cell
         }else{
-            cell.dateValue.text = ""
+            let cell = CalcLogTableViewCell(style: .default, reuseIdentifier: "CalcLogTableViewCell")
+                return cell
         }
         
-        print("will cellForRowAt")
-        return cell
+        
     }
     
     
