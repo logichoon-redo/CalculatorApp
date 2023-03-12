@@ -250,6 +250,7 @@ class ViewController: UIViewController {
             self.logBuffer.append(" = \(String(describing: self.resultValue ?? 0))")
         }
         //self.inputLabel.text = "\(String(describing: self.resultValue ?? 0))"
+        self.saveLog()
         
         self.isShowResult = true
         self.logLabel.text = self.logBuffer
@@ -354,6 +355,11 @@ class ViewController: UIViewController {
         guard let object = NSManagedObject(entity: entityDes, insertInto: context) as? CalcLog else {return}
         
         object.log = logBuffer
+        object.date = Date()
+        object.uuid = UUID()
+        
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        print("called showLogTable")
     }
     
     fileprivate func updateResultLabel() {
