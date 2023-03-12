@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Foundation
 
 class ViewController: UIViewController {
 
@@ -85,9 +86,7 @@ class ViewController: UIViewController {
 
     //MARK: - Button Logic
     
-    fileprivate func setTargetAction() {
-        
-        //firstStack
+    fileprivate func setTargetAction() {        //firstStack
         self.ACButton.addTarget(self, action: #selector(clickAC), for: .touchUpInside)
         self.modOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.divisionOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
@@ -254,74 +253,75 @@ class ViewController: UIViewController {
     
     //MARK: Equal Algorithms
     
-    func calculate(_ expression: String) -> Double {
-        var result = 0.0
-        var currentOperator: Character = "+"
-        var currentNumber = ""
-        var numbers: [Double] = []
+    func calculate(_ equation: String) -> Double {
+        let operators: Set<Character> = ["+", "-", "*", "/", "%"]
+        var numStack = [Double]()
+        var opStack = [Character]()
+        var numString = ""
         
-        for character in expression {
-            switch character {
-            case "+", "-":
-                if !currentNumber.isEmpty {
-                    let number = Double(currentNumber)!
-                    numbers.append(number)
-                    currentNumber = ""
+        // 문자열을 반복하며 숫자와 연산자를 구분합니다.
+        for char in equation {
+            if char.isNumber || char == "." {
+                numString.append(char)
+            } else if operators.contains(char) {
+                if let num = Double(numString) {
+                    numStack.append(num)
+                    numString = ""
                 }
-                currentOperator = character
                 
-            case "*", "/", "%":
-                if !currentNumber.isEmpty {
-                    let number = Double(currentNumber)!
-                    numbers.append(number)
-                    currentNumber = ""
+                // 우선순위가 높은 연산자는 먼저 처리합니다.
+                while !opStack.isEmpty && higherPrecedence(opStack.last!, char) {
+                    let num2 = numStack.removeLast()
+                    let num1 = numStack.removeLast()
+                    let op = opStack.removeLast()
+                    let result = calculator(op, num1, num2)
+                    numStack.append(result)
                 }
-                currentOperator = character
                 
-            case "0"..."9", ".":
-                currentNumber.append(character)
-                
-            default:
-                break
+                opStack.append(char)
             }
         }
         
-        if !currentNumber.isEmpty {
-            let number = Double(currentNumber)!
-            numbers.append(number)
+        if let num = Double(numString) {
+            numStack.append(num)
         }
         
-        var i = 0
-        while i < numbers.count {
-            let number = numbers[i]
-            if currentOperator == "*" {
-                if i + 1 < numbers.count {
-                    let nextNumber = numbers[i+1]
-                    result = number * nextNumber
-                    numbers[i+1] = result
-                    i += 1
-                }
-            } else if currentOperator == "/" {
-                if i + 1 < numbers.count {
-                    let nextNumber = numbers[i+1]
-                    result = number / nextNumber
-                    numbers[i+1] = result
-                    i += 1
-                }
-            } else if currentOperator == "%" {
-                if i + 1 < numbers.count {
-                    let nextNumber = numbers[i+1]
-                    result = number.truncatingRemainder(dividingBy: nextNumber)
-                    numbers[i+1] = result
-                    i += 1
-                }
+        // 남은 연산자를 모두 처리합니다.
+        while !opStack.isEmpty {
+            let num2 = numStack.removeLast()
+            let num1 = numStack.removeLast()
+            let op = opStack.removeLast()
+            let result = calculator(op, num1, num2)
+            numStack.append(result)
+        }
+        
+        // 계산된 결과값을 반환합니다.
+        return numStack.last ?? 0
+    }
+    
+    func higherPrecedence(_ op1: Character, _ op2: Character) -> Bool {
+        return (op1 == "*" || op1 == "/" || op1 == "%") && (op2 == "+" || op2 == "-")
+    }
+    
+    func calculator(_ op: Character, _ num1: Double, _ num2: Double) -> Double {
+        switch op {
+        case "+":
+            return num1 + num2
+        case "-":
+            return num1 - num2
+        case "*":
+            return num1 * num2
+        case "/":
+            if num2 == 0 {
+                return Double.nan
             } else {
-                result = number
+                return num1 / num2
             }
-            i += 1
+        case "%":
+            return num1.truncatingRemainder(dividingBy: num2)
+        default:
+            return Double.nan
         }
-        
-        return numbers.reduce(0, { $0 + $1 * (currentOperator == "-" ? -1 : 1) })
     }
     
     //Label Logic
@@ -340,7 +340,6 @@ class ViewController: UIViewController {
         self.inputLabel.text = self.inputBuffer
         self.logLabel.text = self.logBuffer
     }
-    
     
     
 }
