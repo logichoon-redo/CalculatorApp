@@ -353,26 +353,17 @@ class ViewController: UIViewController {
     
     fileprivate func saveLog() {
         
-//        guard let entityDes = NSEntityDescription.entity(forEntityName: "CalcLog", in: context) else {return}
-//
-//        guard let object = NSManagedObject(entity: entityDes, insertInto: context) as? CalcLog else {return}
-//
-//        object.log = logBuffer
-//        object.date = Date()
-//        object.uuid = UUID()
-//
-//        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-//        print("called showLogTable")
+        let object = CalcLog(context: context)
+        object.log = logBuffer
+        object.date = Date()
+        object.uuid = UUID()
         
-        let newLog = CalcLog(context: context)
-            newLog.log = logBuffer
-            
-            do {
-                try context.save()
-            } catch {
-                print("Failed saving log with error: \(error)")
-            }
-
+        do {
+            try context.save()
+        } catch {
+            print("Failed saving log with error: \(error)")
+        }
+        
     }
     
     fileprivate func updateResultLabel() {

@@ -21,6 +21,7 @@ class CalcLogTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.largeContentTitle = "Log"
+        tableView.isEditing = true
         
         self.fetchData()
     }
@@ -84,6 +85,18 @@ class CalcLogTableViewController: UITableViewController {
         }
         
         
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            var loglist = [indexPath]
+            
+            loglist.remove(at: indexPath.row)
+            
+            tableView.beginUpdates()
+            tableView.deleteRows(at: loglist, with: .right)
+            tableView.endUpdates()
+        }
     }
     
     
