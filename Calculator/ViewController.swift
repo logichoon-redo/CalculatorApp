@@ -7,13 +7,14 @@
 
 import UIKit
 import Foundation
+import CoreData
 
 class ViewController: UIViewController {
 
     //MARK: - Properties
     
     //view객체들
-    var logSignLabel: UILabel!
+    var logSignLabel: UIButton!
     var logLabel: UILabel!
     var inputLabel: UILabel!
     var interFaceView: UIView!
@@ -65,6 +66,8 @@ class ViewController: UIViewController {
     var isShowResult: Bool = false
     var isInitNum: Bool = true
     
+    //CoreData
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
      
     //MARK: - LifeCycle
     
@@ -86,7 +89,11 @@ class ViewController: UIViewController {
 
     //MARK: - Button Logic
     
-    fileprivate func setTargetAction() {        //firstStack
+    fileprivate func setTargetAction() {
+        //logButton
+        self.logSignLabel.addTarget(self, action: #selector(showLogTable), for: .touchUpInside)
+        
+        //firstStack
         self.ACButton.addTarget(self, action: #selector(clickAC), for: .touchUpInside)
         self.modOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.divisionOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
@@ -335,6 +342,19 @@ class ViewController: UIViewController {
         }
     }
 
+    @objc func showLogTable() {
+        let logTableVC = CalcLogTableViewController()
+        
+        self.present(logTableVC, animated: true)
+    }
+    
+    fileprivate func saveLog() {
+        guard let entityDes = NSEntityDescription.entity(forEntityName: "CalcLog", in: context) else {return}
+        
+        guard let object = NSManagedObject(entity: entityDes, insertInto: context) as? CalcLog else {return}
+        
+        object.log = logBuffer
+    }
     
     fileprivate func updateResultLabel() {
         self.inputLabel.text = self.inputBuffer
@@ -356,10 +376,10 @@ extension ViewController {
     }
     
     fileprivate func setLogSignLabel() {
-        self.logSignLabel.text = "Log: "
+        self.logSignLabel.setTitle("Log: ", for: .normal)
         self.logSignLabel.tintColor = .black
-        self.logSignLabel.textAlignment = .left
-        self.logSignLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        //self.logSignLabel.textAlignment = .left
+        //self.logSignLabel.font = UIFont.boldSystemFont(ofSize: 20)
     }
     
     fileprivate func setLogLabel() {
@@ -572,7 +592,7 @@ extension ViewController: ConfigureSubviewsCase {
     
     func createSubviews() {
         //view객체들
-        logSignLabel = UILabel()
+        logSignLabel = UIButton()
         logLabel = UILabel()
         inputLabel = UILabel()
         interFaceView = UIView()

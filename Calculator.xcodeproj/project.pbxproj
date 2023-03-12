@@ -18,6 +18,7 @@
 		4B00437729B7002300BC2E66 /* CalculatorUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B00437629B7002300BC2E66 /* CalculatorUITestsLaunchTests.swift */; };
 		4B524FAA29B9ECAD0054EFF6 /* ViewLayoutProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B524FA929B9ECAD0054EFF6 /* ViewLayoutProtocols.swift */; };
 		4BD1F1F929BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */; };
+		4BF2114229BDCE26006653B4 /* CalcLogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		4B00437629B7002300BC2E66 /* CalculatorUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		4B524FA929B9ECAD0054EFF6 /* ViewLayoutProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLayoutProtocols.swift; sourceTree = "<group>"; };
 		4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png"; sourceTree = "<group>"; };
+		4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcLogTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				4B00435029B7002200BC2E66 /* AppDelegate.swift */,
 				4B00435229B7002200BC2E66 /* SceneDelegate.swift */,
 				4B00435429B7002200BC2E66 /* ViewController.swift */,
+				4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */,
 				4B524FA929B9ECAD0054EFF6 /* ViewLayoutProtocols.swift */,
 				4B00435C29B7002300BC2E66 /* Assets.xcassets */,
 				4B00435E29B7002300BC2E66 /* LaunchScreen.storyboard */,
@@ -265,6 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B524FAA29B9ECAD0054EFF6 /* ViewLayoutProtocols.swift in Sources */,
+				4BF2114229BDCE26006653B4 /* CalcLogTableViewController.swift in Sources */,
 				4B00435529B7002200BC2E66 /* ViewController.swift in Sources */,
 				4B00435B29B7002200BC2E66 /* Calculator.xcdatamodeld in Sources */,
 				4B00435129B7002200BC2E66 /* AppDelegate.swift in Sources */,
