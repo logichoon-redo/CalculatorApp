@@ -21,7 +21,7 @@ class CalcLogTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.largeContentTitle = "Log"
-        tableView.isEditing = true
+        //tableView.isEditing = true
         
         self.fetchData()
     }
@@ -111,16 +111,11 @@ class CalcLogTableViewController: UITableViewController {
         }
     }
     
-//    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        
-//        let delete = UIContextualAction(style: .normal, title: "삭제") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
-//            print("삭제됨")
-//            success(true)
-//        }
-//        
-//        delete.backgroundColor = .systemRed
-//        
-//        return UISwipeActionsConfiguration(actions: [delete])
+    
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "CalcLogTableViewCell", for: indexPath)
+//        cell.isEditing = true
+//
 //    }
     
 }
