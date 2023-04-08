@@ -352,7 +352,6 @@ class ViewController: UIViewController {
     //MARK: - Core Data
     
     fileprivate func saveLog() {
-        
         let object = CalcLog(context: context)
         object.log = logBuffer
         object.date = Date()
@@ -363,7 +362,6 @@ class ViewController: UIViewController {
         } catch {
             print("Failed saving log with error: \(error)")
         }
-        
     }
     
     fileprivate func updateResultLabel() {
