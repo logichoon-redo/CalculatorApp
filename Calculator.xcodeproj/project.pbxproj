@@ -19,6 +19,9 @@
 		4B1822F129BDF090001592B9 /* CalcLog.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B1822EF29BDF090001592B9 /* CalcLog.xcdatamodeld */; };
 		4B1822F329BDF977001592B9 /* CalcLogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1822F229BDF977001592B9 /* CalcLogTableViewCell.swift */; };
 		4B524FAA29B9ECAD0054EFF6 /* ViewLayoutProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B524FA929B9ECAD0054EFF6 /* ViewLayoutProtocols.swift */; };
+		4B64D3992A07C387006AD760 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4B64D3982A07C387006AD760 /* RxCocoa */; };
+		4B64D39B2A07C387006AD760 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4B64D39A2A07C387006AD760 /* RxSwift */; };
+		4B64D39D2A07C761006AD760 /* CalcModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B64D39C2A07C761006AD760 /* CalcModel.swift */; };
 		4BC61FDB29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC61FDA29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png */; };
 		4BD1F1F929BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */; };
 		4BF2114229BDCE26006653B4 /* CalcLogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */; };
@@ -58,6 +61,7 @@
 		4B1822F029BDF090001592B9 /* CalcLog.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CalcLog.xcdatamodel; sourceTree = "<group>"; };
 		4B1822F229BDF977001592B9 /* CalcLogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcLogTableViewCell.swift; sourceTree = "<group>"; };
 		4B524FA929B9ECAD0054EFF6 /* ViewLayoutProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLayoutProtocols.swift; sourceTree = "<group>"; };
+		4B64D39C2A07C761006AD760 /* CalcModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcModel.swift; sourceTree = "<group>"; };
 		4BC61FDA29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png"; sourceTree = "<group>"; };
 		4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png"; sourceTree = "<group>"; };
 		4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcLogTableViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +72,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B64D39B2A07C387006AD760 /* RxSwift in Frameworks */,
+				4B64D3992A07C387006AD760 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,19 +117,10 @@
 		4B00434F29B7002200BC2E66 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				4B00435029B7002200BC2E66 /* AppDelegate.swift */,
-				4B00435229B7002200BC2E66 /* SceneDelegate.swift */,
-				4B00435429B7002200BC2E66 /* ViewController.swift */,
-				4B1822F229BDF977001592B9 /* CalcLogTableViewCell.swift */,
-				4B1822EF29BDF090001592B9 /* CalcLog.xcdatamodeld */,
-				4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */,
-				4B524FA929B9ECAD0054EFF6 /* ViewLayoutProtocols.swift */,
-				4B00435C29B7002300BC2E66 /* Assets.xcassets */,
-				4B00435E29B7002300BC2E66 /* LaunchScreen.storyboard */,
-				4B00436129B7002300BC2E66 /* Info.plist */,
-				4BC61FDA29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png */,
-				4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */,
-				4B00435929B7002200BC2E66 /* Calculator.xcdatamodeld */,
+				4B64D3962A07C25D006AD760 /* Utiles */,
+				4B64D3952A07C25A006AD760 /* Model */,
+				4B64D3942A07C256006AD760 /* View */,
+				4B64D3932A07C253006AD760 /* ViewModel */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -145,6 +142,48 @@
 			path = CalculatorUITests;
 			sourceTree = "<group>";
 		};
+		4B64D3932A07C253006AD760 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4B64D3942A07C256006AD760 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4B00435429B7002200BC2E66 /* ViewController.swift */,
+				4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */,
+				4B1822F229BDF977001592B9 /* CalcLogTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4B64D3952A07C25A006AD760 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4B64D39C2A07C761006AD760 /* CalcModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4B64D3962A07C25D006AD760 /* Utiles */ = {
+			isa = PBXGroup;
+			children = (
+				4B00435029B7002200BC2E66 /* AppDelegate.swift */,
+				4B00435229B7002200BC2E66 /* SceneDelegate.swift */,
+				4B00436129B7002300BC2E66 /* Info.plist */,
+				4B1822EF29BDF090001592B9 /* CalcLog.xcdatamodeld */,
+				4B00435929B7002200BC2E66 /* Calculator.xcdatamodeld */,
+				4B00435C29B7002300BC2E66 /* Assets.xcassets */,
+				4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */,
+				4BC61FDA29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png */,
+				4B00435E29B7002300BC2E66 /* LaunchScreen.storyboard */,
+				4B524FA929B9ECAD0054EFF6 /* ViewLayoutProtocols.swift */,
+			);
+			path = Utiles;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -161,6 +200,10 @@
 			dependencies = (
 			);
 			name = Calculator;
+			packageProductDependencies = (
+				4B64D3982A07C387006AD760 /* RxCocoa */,
+				4B64D39A2A07C387006AD760 /* RxSwift */,
+			);
 			productName = Calculator;
 			productReference = 4B00434D29B7002200BC2E66 /* Calculator.app */;
 			productType = "com.apple.product-type.application";
@@ -233,6 +276,9 @@
 				Base,
 			);
 			mainGroup = 4B00434429B7002200BC2E66;
+			packageReferences = (
+				4B64D3972A07C387006AD760 /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			productRefGroup = 4B00434E29B7002200BC2E66 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -280,6 +326,7 @@
 				4B524FAA29B9ECAD0054EFF6 /* ViewLayoutProtocols.swift in Sources */,
 				4BF2114229BDCE26006653B4 /* CalcLogTableViewController.swift in Sources */,
 				4B00435529B7002200BC2E66 /* ViewController.swift in Sources */,
+				4B64D39D2A07C761006AD760 /* CalcModel.swift in Sources */,
 				4B00435B29B7002200BC2E66 /* Calculator.xcdatamodeld in Sources */,
 				4B00435129B7002200BC2E66 /* AppDelegate.swift in Sources */,
 				4B1822F329BDF977001592B9 /* CalcLogTableViewCell.swift in Sources */,
@@ -455,7 +502,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GHGPAZGBBT;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Calculator/Info.plist;
+				INFOPLIST_FILE = Calculator/Utiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -482,7 +529,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GHGPAZGBBT;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Calculator/Info.plist;
+				INFOPLIST_FILE = Calculator/Utiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -612,6 +659,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4B64D3972A07C387006AD760 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4B64D3982A07C387006AD760 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B64D3972A07C387006AD760 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		4B64D39A2A07C387006AD760 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B64D3972A07C387006AD760 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		4B00435929B7002200BC2E66 /* Calculator.xcdatamodeld */ = {

@@ -18,7 +18,7 @@ fileprivate func saveLog() {
             print("Failed saving log with error: \(error)")
         }
     }
-    ```
+```
 
 # Calculation Log Screen
 ![Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23 16 30](https://user-images.githubusercontent.com/117021317/230726092-5d8c6015-a44e-4951-b8d9-217a445e58e2.png)
