@@ -21,7 +21,7 @@ fileprivate func saveLog() {
 ```
 
 # Calculation Log Screen
-![Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23 16 30](https://user-images.githubusercontent.com/117021317/230726092-5d8c6015-a44e-4951-b8d9-217a445e58e2.png)
+![Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23 16 30](https://github.com/logicHoon-bit/CalculatorApp/blob/main/Simulator%20Screenshot%20-%20iPhone%2014%20Pro%20-%202023-05-21%20at%2018.38.21.png)
 
 # Use CoreData
 ``` swift
