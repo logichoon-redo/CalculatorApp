@@ -2,7 +2,7 @@
 계산기앱
 
 # Calculation Screen
-![Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18 06 47](https://user-images.githubusercontent.com/117021317/230726085-879f0650-e356-43e9-a20c-a22225115b46.png)
+![Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18 06 47](https://github.com/logicHoon-bit/CalculatorApp/blob/main/230726085-879f0650-e356-43e9-a20c-a22225115b46.png)
 
 # Save CoreData
 ``` swift
