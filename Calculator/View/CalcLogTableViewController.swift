@@ -13,14 +13,14 @@ class CalcLogTableViewController: UITableViewController {
     //MARK: - Properties
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var logList = [CalcLog]()
+    var calcLogViewModel = CalcLogTableViewModel()
+    //var logList = [CalcLog]()
     
     //MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.largeContentTitle = "Log"
-        //tableView.isEditing = true
         
         self.fetchData()
     }
@@ -41,7 +41,7 @@ class CalcLogTableViewController: UITableViewController {
         
         let context = appDelegate.persistentContainer.viewContext
         do{
-            self.logList = try context.fetch(fetchRequest)
+            try calcLogViewModel.setLog(context.fetch(fetchRequest))
         }catch{
             print(error)
         }
@@ -56,19 +56,19 @@ class CalcLogTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return logList.count
+        return calcLogViewModel.getLogCount()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "CalcLogTableViewCell", for: indexPath) as? CalcLogTableViewCell{
             
-            if let hasLog = logList[indexPath.row].log{
+            if let hasLog = calcLogViewModel.getLog(indexPath.row){
                 cell.logValue.text = hasLog
             }else{
                 cell.logValue.text = "noLogData"
             }
             
-            if let hasDate = logList[indexPath.row].date {
+            if let hasDate = calcLogViewModel.getData(indexPath.row) {
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
                 let dataString = formatter.string(from: hasDate)
@@ -92,7 +92,7 @@ class CalcLogTableViewController: UITableViewController {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
             
-            let loglist = logList[indexPath.row]
+            let loglist = calcLogViewModel.getLogList(indexPath.row)
             
             context.delete(loglist)
             
@@ -102,7 +102,7 @@ class CalcLogTableViewController: UITableViewController {
                 print(error)
             }
             
-            logList.remove(at: indexPath.row)
+            calcLogViewModel.removeLogList(indexPath.row)
             
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .automatic)
