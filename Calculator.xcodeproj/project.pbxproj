@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		4B00435129B7002200BC2E66 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B00435029B7002200BC2E66 /* AppDelegate.swift */; };
 		4B00435329B7002200BC2E66 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B00435229B7002200BC2E66 /* SceneDelegate.swift */; };
-		4B00435529B7002200BC2E66 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B00435429B7002200BC2E66 /* ViewController.swift */; };
+		4B00435529B7002200BC2E66 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B00435429B7002200BC2E66 /* MainViewController.swift */; };
 		4B00435B29B7002200BC2E66 /* Calculator.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B00435929B7002200BC2E66 /* Calculator.xcdatamodeld */; };
 		4B00435D29B7002300BC2E66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B00435C29B7002300BC2E66 /* Assets.xcassets */; };
 		4B00436029B7002300BC2E66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B00435E29B7002300BC2E66 /* LaunchScreen.storyboard */; };
@@ -22,6 +22,7 @@
 		4B64D3992A07C387006AD760 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4B64D3982A07C387006AD760 /* RxCocoa */; };
 		4B64D39B2A07C387006AD760 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4B64D39A2A07C387006AD760 /* RxSwift */; };
 		4B64D39D2A07C761006AD760 /* CalcModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B64D39C2A07C761006AD760 /* CalcModel.swift */; };
+		4B8767932A22287300E61C3B /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8767922A22287300E61C3B /* MainViewModel.swift */; };
 		4BC61FDB29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC61FDA29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png */; };
 		4BD1F1F929BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */; };
 		4BF2114229BDCE26006653B4 /* CalcLogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */; };
@@ -48,7 +49,7 @@
 		4B00434D29B7002200BC2E66 /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B00435029B7002200BC2E66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B00435229B7002200BC2E66 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		4B00435429B7002200BC2E66 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4B00435429B7002200BC2E66 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4B00435A29B7002200BC2E66 /* Calculator.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Calculator.xcdatamodel; sourceTree = "<group>"; };
 		4B00435C29B7002300BC2E66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4B00435F29B7002300BC2E66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -62,6 +63,7 @@
 		4B1822F229BDF977001592B9 /* CalcLogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcLogTableViewCell.swift; sourceTree = "<group>"; };
 		4B524FA929B9ECAD0054EFF6 /* ViewLayoutProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLayoutProtocols.swift; sourceTree = "<group>"; };
 		4B64D39C2A07C761006AD760 /* CalcModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcModel.swift; sourceTree = "<group>"; };
+		4B8767922A22287300E61C3B /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		4BC61FDA29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png"; sourceTree = "<group>"; };
 		4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png"; sourceTree = "<group>"; };
 		4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcLogTableViewController.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		4B64D3932A07C253006AD760 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				4B8767922A22287300E61C3B /* MainViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -152,7 +155,7 @@
 		4B64D3942A07C256006AD760 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4B00435429B7002200BC2E66 /* ViewController.swift */,
+				4B00435429B7002200BC2E66 /* MainViewController.swift */,
 				4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */,
 				4B1822F229BDF977001592B9 /* CalcLogTableViewCell.swift */,
 			);
@@ -325,9 +328,10 @@
 			files = (
 				4B524FAA29B9ECAD0054EFF6 /* ViewLayoutProtocols.swift in Sources */,
 				4BF2114229BDCE26006653B4 /* CalcLogTableViewController.swift in Sources */,
-				4B00435529B7002200BC2E66 /* ViewController.swift in Sources */,
+				4B00435529B7002200BC2E66 /* MainViewController.swift in Sources */,
 				4B64D39D2A07C761006AD760 /* CalcModel.swift in Sources */,
 				4B00435B29B7002200BC2E66 /* Calculator.xcdatamodeld in Sources */,
+				4B8767932A22287300E61C3B /* MainViewModel.swift in Sources */,
 				4B00435129B7002200BC2E66 /* AppDelegate.swift in Sources */,
 				4B1822F329BDF977001592B9 /* CalcLogTableViewCell.swift in Sources */,
 				4B00435329B7002200BC2E66 /* SceneDelegate.swift in Sources */,

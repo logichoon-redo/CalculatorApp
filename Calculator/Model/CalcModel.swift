@@ -9,6 +9,8 @@ import Foundation
 
 struct CalcModel {
     
+    var logBuffer: String = ""
+    var operandBuffer: String = "0"
     
     
 }

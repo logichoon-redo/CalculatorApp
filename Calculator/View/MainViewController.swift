@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
 
     //MARK: - Properties
     
@@ -57,18 +57,20 @@ class ViewController: UIViewController {
     //Equal(=) 버튼
     var equalButton: UIButton!
     
-    //이것들로 계산할거임
-    var tempValue: Double = 0
-    var operandBuffer: String = "0"
-    var logBuffer: String = ""
+    //---------- Calc Value --------------
+    let mainViewModel = MainViewModel()
+    
+    //var tempValue: Double = 0 //?
+    ///lazy var operandBuffer = mainViewModel.calcModel.operandBuffer
+    //lazy var logBuffer = mainViewModel.calcModel.logBuffer
     
     //calculator
     var resultValue: Double?
     var isShowResult: Bool = false
-    var isInitNum: Bool = true
+    var isFirstNum: Bool = true
     
     //CoreData
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
      
     //MARK: - LifeCycle
     
@@ -76,7 +78,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = .lightGray
-        
+                
         //setlayout
         self.configureSubviews()
         
@@ -96,21 +98,21 @@ class ViewController: UIViewController {
         
         //firstStack
         self.ACButton.addTarget(self, action: #selector(clickAC), for: .touchUpInside)
-        self.modOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
-        self.divisionOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
-        self.multiplicationOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
+        self.modOperatorButton.addTarget(self, action: #selector(clickOperatorButton(_: )), for: .touchUpInside)
+        self.divisionOperatorButton.addTarget(self, action: #selector(clickOperatorButton(_: )), for: .touchUpInside)
+        self.multiplicationOperatorButton.addTarget(self, action: #selector(clickOperatorButton(_: )), for: .touchUpInside)
         
         //secondStack
         self.button7.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.button8.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.button9.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
-        self.subtractionOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
+        self.subtractionOperatorButton.addTarget(self, action: #selector(clickOperatorButton(_: )), for: .touchUpInside)
         
         //thirdStack
         self.button4.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.button5.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.button6.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
-        self.additionOperatorButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
+        self.additionOperatorButton.addTarget(self, action: #selector(clickOperatorButton(_: )), for: .touchUpInside)
         
         //fourthStack
         self.button1.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
@@ -120,7 +122,7 @@ class ViewController: UIViewController {
         //fifthStack
         self.zeroButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
         self.doubleZeroButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
-        self.dotButton.addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
+        self.dotButton.addTarget(self, action: #selector(clickDotButton), for: .touchUpInside)
         
         //equals
         self.equalButton.addTarget(self, action: #selector(equalsClick), for: .touchUpInside)
@@ -128,217 +130,42 @@ class ViewController: UIViewController {
     }
     
     //firstStack의 버튼들
-    @objc fileprivate func clickButton(_ sender: UIButton) {
-        switch sender{
-        case modOperatorButton:
-            logBuffer.append(" % ")
-            operandBuffer = ""
-            self.isShowResult = false
-            updateResultLabel()
-        case divisionOperatorButton:
-            logBuffer.append(" / ")
-            operandBuffer = ""
-            self.isShowResult = false
-            updateResultLabel()
-        case multiplicationOperatorButton:
-            logBuffer.append(" * ")
-            operandBuffer = ""
-            self.isShowResult = false
-            updateResultLabel()
-        case subtractionOperatorButton:
-            logBuffer.append(" - ")
-            operandBuffer = ""
-            self.isShowResult = false
-            updateResultLabel()
-        case additionOperatorButton:
-            logBuffer.append(" + ")
-            operandBuffer = ""
-            self.isShowResult = false
-            updateResultLabel()
-        //Literal ---------------------------------
-        case dotButton:
-            operandBuffer.append(".")
-            logBuffer.append(".")
-            updateResultLabel()
-        case doubleZeroButton:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("00")
-            logBuffer.append("00")
-            updateResultLabel()
-        case zeroButton:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("0")
-            logBuffer.append("0")
-            updateResultLabel()
-        case button1:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("1")
-            logBuffer.append("1")
-            updateResultLabel()
-        case button2:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("2")
-            logBuffer.append("2")
-            updateResultLabel()
-        case button3:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("3")
-            logBuffer.append("3")
-            updateResultLabel()
-        case button4:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("4")
-            logBuffer.append("4")
-            updateResultLabel()
-        case button5:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("5")
-            logBuffer.append("5")
-            updateResultLabel()
-        case button6:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("6")
-            logBuffer.append("6")
-            updateResultLabel()
-        case button7:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("7")
-            logBuffer.append("7")
-            updateResultLabel()
-        case button8:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("8")
-            logBuffer.append("8")
-            updateResultLabel()
-        case button9:
-            if self.isInitNum {self.operandBuffer = ""}
-            self.isInitNum = false
-            operandBuffer.append("9")
-            logBuffer.append("9")
-            updateResultLabel()
-        default:
-            print("예외값이 inputBuffer에 입력됨")
-            break
-        }
-    }
+    
     
     @objc func clickAC() {
-        operandBuffer = ""
-        logBuffer = ""
+        mainViewModel.setOperandBufferDefault()
+        mainViewModel.setLogBufferDefault()
         self.isShowResult = false
-        self.isInitNum = false
-        updateResultLabel()
+        self.isFirstNum = false
+        self.updateResultLabel()
     }
     
     @objc func equalsClick() {
-        print("input \(logBuffer)")
-        self.resultValue = self.calculate(logBuffer)
-        print("output \(resultValue!)")
+        //print("input \(logBuffer)")
+        self.resultValue = mainViewModel.calculate()
+        //print("output \(resultValue!)")
         
         self.inputLabel.text = "\(String(describing: self.resultValue ?? 0))"
         
         if !isShowResult {
-            self.logBuffer.append(" = \(String(describing: self.resultValue ?? 0))")
+            mainViewModel.appendLogBuffer(" = \(String(describing: self.resultValue ?? 0))")
         }
         //self.inputLabel.text = "\(String(describing: self.resultValue ?? 0))"
-        self.saveLog()
+        self.mainViewModel.saveLog()
         
         self.isShowResult = true
-        self.logLabel.text = self.logBuffer
-        self.operandBuffer = ""
-        self.logBuffer = ""
+        self.logLabel.text = mainViewModel.getLogBuffer()
+        mainViewModel.setOperandBufferDefault()
+        mainViewModel.setLogBufferDefault()
         //self.updateResultLabel()
     }
     
-    //MARK: Equal Algorithms
-    
-    func calculate(_ equation: String) -> Double {
-        let operators: Set<Character> = ["+", "-", "*", "/", "%"]
-        var numStack = [Double]()
-        var opStack = [Character]()
-        var numString = ""
-        
-        // 문자열을 반복하며 숫자와 연산자를 구분합니다.
-        for char in equation {
-            if char.isNumber || char == "." {
-                numString.append(char)
-            } else if operators.contains(char) {
-                if let num = Double(numString) {
-                    numStack.append(num)
-                    numString = ""
-                }
-                
-                // 우선순위가 높은 연산자는 먼저 처리합니다.
-                while !opStack.isEmpty && higherPrecedence(opStack.last!, char) {
-                    let num2 = numStack.removeLast()
-                    let num1 = numStack.removeLast()
-                    let op = opStack.removeLast()
-                    let result = calculator(op, num1, num2)
-                    numStack.append(result)
-                }
-                
-                opStack.append(char)
-            }
-        }
-        
-        if let num = Double(numString) {
-            numStack.append(num)
-        }
-        
-        // 남은 연산자를 모두 처리합니다.
-        while !opStack.isEmpty {
-            let num2 = numStack.removeLast()
-            let num1 = numStack.removeLast()
-            let op = opStack.removeLast()
-            let result = calculator(op, num1, num2)
-            numStack.append(result)
-        }
-        
-        // 계산된 결과값을 반환합니다.
-        return numStack.last ?? 0
-    }
-    
-    func higherPrecedence(_ op1: Character, _ op2: Character) -> Bool {
-        return (op1 == "*" || op1 == "/" || op1 == "%") && (op2 == "+" || op2 == "-")
-    }
-    
-    func calculator(_ op: Character, _ num1: Double, _ num2: Double) -> Double {
-        switch op {
-        case "+":
-            return num1 + num2
-        case "-":
-            return num1 - num2
-        case "*":
-            return num1 * num2
-        case "/":
-            if num2 == 0 {
-                return Double.nan
-            } else {
-                return num1 / num2
-            }
-        case "%":
-            return num1.truncatingRemainder(dividingBy: num2)
-        default:
-            return Double.nan
-        }
-    }
-    
-    //Label Logic
+    //MARK: - Equal Algorithms
     
     @objc func labelSwiped() {
-        if !operandBuffer.isEmpty {
-            self.operandBuffer.removeLast()
-            self.logBuffer.removeLast()
+        if !mainViewModel.operandBufferIsEmpty() {
+            mainViewModel.removeLastOperandBuffer()
+            mainViewModel.removeLastLogBuffer()
             self.updateResultLabel()
             print("called labelSwiped")
         }
@@ -349,33 +176,87 @@ class ViewController: UIViewController {
         
         self.present(logTableVC, animated: true)
     }
+   
+    public func updateResultLabel() {
+        self.inputLabel.text = mainViewModel.getOperandBuffer()
+        self.logLabel.text = mainViewModel.getLogBuffer()
+    }
     
-    //MARK: - Core Data
+}
+
+//MARK: - Action
+
+extension MainViewController {
     
-    fileprivate func saveLog() {
-        let object = CalcLog(context: context)
-        object.log = logBuffer
-        object.date = Date()
-        object.uuid = UUID()
-        
-        do {
-            try context.save()
-        } catch {
-            print("Failed saving log with error: \(error)")
+    @objc public func clickOperatorButton(_ sender: UIButton) {
+        switch sender {
+        case modOperatorButton:
+            mainViewModel.appendLogBuffer("%")
+        case divisionOperatorButton:
+            mainViewModel.appendLogBuffer("/")
+        case multiplicationOperatorButton:
+            mainViewModel.appendLogBuffer("*")
+        case subtractionOperatorButton:
+            mainViewModel.appendLogBuffer("-")
+        case additionOperatorButton:
+            mainViewModel.appendLogBuffer("+")
+        default:
+            print("예외값이 inputBuffer에 입력됨")
+            break
         }
+        
+        self.mainViewModel.setOperandBufferDefault()
+        self.isShowResult = false
+        self.updateResultLabel()
     }
     
-    fileprivate func updateResultLabel() {
-        self.inputLabel.text = self.operandBuffer
-        self.logLabel.text = self.logBuffer
+    @objc public func clickDotButton() {
+        mainViewModel.appendOperandBuffer(".")
+        mainViewModel.appendLogBuffer(".")
     }
     
+    @objc public func clickButton(_ sender: UIButton) {
+        var item = ""
+        switch sender{
+        case doubleZeroButton:
+            item = "00"
+        case zeroButton:
+            item = "0"
+        case button1:
+            item = "1"
+        case button2:
+            item = "2"
+        case button3:
+            item = "3"
+        case button4:
+            item = "4"
+        case button5:
+            item = "5"
+        case button6:
+            item = "6"
+        case button7:
+            item = "7"
+        case button8:
+            item = "8"
+        case button9:
+            item = "9"
+        default:
+            print("예외값이 inputBuffer에 입력됨")
+            break
+        }
+
+        if self.isFirstNum {mainViewModel.setOperandBufferDefault()}
+        self.isFirstNum = false
+        mainViewModel.appendOperandBuffer(item)
+        mainViewModel.appendLogBuffer(item)
+        self.updateResultLabel()
+    }
     
 }
 
 //MARK: - Object Setting
 
-extension ViewController {
+extension MainViewController {
     
     fileprivate func setResultScreenView() {
         self.interFaceView.backgroundColor = .lightGray
@@ -584,15 +465,9 @@ extension ViewController {
     
 }
 
-extension ViewController: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        return false
-    }
-}
-
 //MARK: - ConfigureSubviewsCase
 
-extension ViewController: ConfigureSubviewsCase {
+extension MainViewController: ConfigureSubviewsCase {
     func configureSubviews() {
         self.createSubviews()
         self.addSubviews()
@@ -678,14 +553,14 @@ extension ViewController: ConfigureSubviewsCase {
     }
 }
 
-extension ViewController: SetupSubviewsLayouts {
+extension MainViewController: SetupSubviewsLayouts {
     func setupSubviewsLayouts() {
         self.setResultScreenView()
         self.setNormalButtonContainer()
     }
 }
 
-extension ViewController: SetupSubviewsConstraints {
+extension MainViewController: SetupSubviewsConstraints {
     func setupSubviewsConstraints() {
         self.resultScreenViewConstraint()
         self.logSignLabelConstraint()

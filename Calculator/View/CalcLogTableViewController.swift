@@ -111,11 +111,4 @@ class CalcLogTableViewController: UITableViewController {
         }
     }
     
-    
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "CalcLogTableViewCell", for: indexPath)
-//        cell.isEditing = true
-//
-//    }
-    
 }
