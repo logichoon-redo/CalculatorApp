@@ -31,13 +31,8 @@ class CalcLogTableViewCell: UITableViewCell {
 
 extension CalcLogTableViewCell: ConfigureSubviewsCase {
     func configureSubviews() {
-        createSubviews()
         addSubviews()
         setupLayouts()
-    }
-    
-    func createSubviews() {
-       
     }
     
     func addSubviews() {

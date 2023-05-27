@@ -23,6 +23,8 @@
 		4B64D39B2A07C387006AD760 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4B64D39A2A07C387006AD760 /* RxSwift */; };
 		4B64D39D2A07C761006AD760 /* CalcModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B64D39C2A07C761006AD760 /* CalcModel.swift */; };
 		4B8767932A22287300E61C3B /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8767922A22287300E61C3B /* MainViewModel.swift */; };
+		4B8767952A227BCB00E61C3B /* LogModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8767942A227BCB00E61C3B /* LogModel.swift */; };
+		4B8767992A227F0100E61C3B /* CalcLogTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8767982A227F0100E61C3B /* CalcLogTableViewModel.swift */; };
 		4BC61FDB29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC61FDA29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png */; };
 		4BD1F1F929BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */; };
 		4BF2114229BDCE26006653B4 /* CalcLogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */; };
@@ -64,6 +66,8 @@
 		4B524FA929B9ECAD0054EFF6 /* ViewLayoutProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLayoutProtocols.swift; sourceTree = "<group>"; };
 		4B64D39C2A07C761006AD760 /* CalcModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcModel.swift; sourceTree = "<group>"; };
 		4B8767922A22287300E61C3B /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		4B8767942A227BCB00E61C3B /* LogModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogModel.swift; sourceTree = "<group>"; };
+		4B8767982A227F0100E61C3B /* CalcLogTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcLogTableViewModel.swift; sourceTree = "<group>"; };
 		4BC61FDA29E1B1CB00980869 /* Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screenshot - iPhone 14 Pro - 2023-04-08 at 23.16.30.png"; sourceTree = "<group>"; };
 		4BD1F1F829BC7E3900CB2013 /* Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screen Shot - iPhone 14 Pro - 2023-03-11 at 18.06.47.png"; sourceTree = "<group>"; };
 		4BF2114129BDCE26006653B4 /* CalcLogTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcLogTableViewController.swift; sourceTree = "<group>"; };
@@ -148,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				4B8767922A22287300E61C3B /* MainViewModel.swift */,
+				4B8767982A227F0100E61C3B /* CalcLogTableViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -166,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				4B64D39C2A07C761006AD760 /* CalcModel.swift */,
+				4B8767942A227BCB00E61C3B /* LogModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -329,9 +335,11 @@
 				4B524FAA29B9ECAD0054EFF6 /* ViewLayoutProtocols.swift in Sources */,
 				4BF2114229BDCE26006653B4 /* CalcLogTableViewController.swift in Sources */,
 				4B00435529B7002200BC2E66 /* MainViewController.swift in Sources */,
+				4B8767992A227F0100E61C3B /* CalcLogTableViewModel.swift in Sources */,
 				4B64D39D2A07C761006AD760 /* CalcModel.swift in Sources */,
 				4B00435B29B7002200BC2E66 /* Calculator.xcdatamodeld in Sources */,
 				4B8767932A22287300E61C3B /* MainViewModel.swift in Sources */,
+				4B8767952A227BCB00E61C3B /* LogModel.swift in Sources */,
 				4B00435129B7002200BC2E66 /* AppDelegate.swift in Sources */,
 				4B1822F329BDF977001592B9 /* CalcLogTableViewCell.swift in Sources */,
 				4B00435329B7002200BC2E66 /* SceneDelegate.swift in Sources */,

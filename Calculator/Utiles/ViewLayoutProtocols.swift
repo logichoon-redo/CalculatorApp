@@ -12,8 +12,6 @@ protocol ConfigureSubviewsCase {
     
     /// Combine setupview's all configuration
     func configureSubviews()
-    /// Init subviews
-    func createSubviews()
 
     /// Add view to view's subview
     func addSubviews()

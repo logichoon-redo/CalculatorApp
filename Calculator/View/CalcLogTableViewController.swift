@@ -12,7 +12,6 @@ class CalcLogTableViewController: UITableViewController {
 
     //MARK: - Properties
     
-    var navigationBar: UINavigationBar!
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var logList = [CalcLog]()
     
