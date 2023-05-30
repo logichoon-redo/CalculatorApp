@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 //enum LogValueError: Error {
 //    case ValueIsNil
@@ -37,6 +38,17 @@ class CalcLogTableViewModel {
     
     func removeLogList(_ at: Int) {
         logModel.logList.remove(at: at)
+    }
+    
+    func fetchData() {
+        let fetchRequest: NSFetchRequest<CalcLog> = CalcLog.fetchRequest()
+        
+        let context = Manager.shared.persistentContainer.viewContext
+        do{
+            try self.setLog(context.fetch(fetchRequest))
+        }catch{
+            print(error)
+        }
     }
     
 }

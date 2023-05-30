@@ -11,8 +11,7 @@ import UIKit
 class MainViewModel {
     
     var calcModel = CalcModel()
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    let updateResult = PublishSubject<CalcModel>()
+    //let updateResult = PublishSubject<CalcModel>()
     
     init() {
         
@@ -52,22 +51,6 @@ class MainViewModel {
     
     public func operandBufferIsEmpty() -> Bool {
         return calcModel.operandBuffer.isEmpty
-    }
-    
-    
-    //MARK: Use CoreData
-    
-    public func saveLog() {
-        let object = CalcLog(context: context)
-        object.log = calcModel.logBuffer
-        object.date = Date()
-        object.uuid = UUID()
-        
-        do {
-            try context.save()
-        } catch {
-            print("Failed saving log with error: \(error)")
-        }
     }
     
     //MARK: - Calculator Logic
@@ -141,6 +124,10 @@ class MainViewModel {
         default:
             return Double.nan
         }
+    }
+    
+    func MASaveCoreData() {
+        Manager.shared.saveLog(logBuffer: getLogBuffer())
     }
     
 }

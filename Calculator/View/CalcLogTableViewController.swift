@@ -14,7 +14,6 @@ class CalcLogTableViewController: UITableViewController {
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var calcLogViewModel = CalcLogTableViewModel()
-    //var logList = [CalcLog]()
     
     //MARK: - LifeCycle
     
@@ -22,7 +21,7 @@ class CalcLogTableViewController: UITableViewController {
         super.viewDidLoad()
         self.view.largeContentTitle = "Log"
         
-        self.fetchData()
+        calcLogViewModel.fetchData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -30,22 +29,13 @@ class CalcLogTableViewController: UITableViewController {
         
         tableView.register(CalcLogTableViewCell.self, forCellReuseIdentifier: "CalcLogTableViewCell")
         
-        self.fetchData()
+        calcLogViewModel.fetchData()
         self.tableView.reloadData()
     }
     
     //MARK: - Care Data
     
-    func fetchData() {
-        let fetchRequest: NSFetchRequest<CalcLog> = CalcLog.fetchRequest()
-        
-        let context = appDelegate.persistentContainer.viewContext
-        do{
-            try calcLogViewModel.setLog(context.fetch(fetchRequest))
-        }catch{
-            print(error)
-        }
-    }
+    
 
     // MARK: - Table view data source
 
@@ -89,8 +79,8 @@ class CalcLogTableViewController: UITableViewController {
     //cell delete
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let context = appDelegate.persistentContainer.viewContext
+            //let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = Manager.shared.persistentContainer.viewContext
             
             let loglist = calcLogViewModel.getLogList(indexPath.row)
             

@@ -58,8 +58,17 @@ class MainViewController: UIViewController {
              inputLabel.addGestureRecognizer(swipeGesture)
              inputLabel.isUserInteractionEnabled = true
     }
+    
+    public func updateResultLabel() {
+        self.inputLabel.text = mainViewModel.getOperandBuffer()
+        self.logLabel.text = mainViewModel.getLogBuffer()
+    }
+    
+}
 
-    //MARK: - Button Logic
+//MARK: - Action
+
+extension MainViewController {
     
     fileprivate func setTargetAction() {
         //numbers
@@ -98,15 +107,14 @@ class MainViewController: UIViewController {
         if !isShowResult {
             mainViewModel.appendLogBuffer(" = \(String(describing: self.resultValue ?? 0))")
         }
-        self.mainViewModel.saveLog()
+        
+        mainViewModel.MASaveCoreData()
         
         self.isShowResult = true
         self.logLabel.text = mainViewModel.getLogBuffer()
         mainViewModel.setOperandBufferDefault()
         mainViewModel.setLogBufferDefault()
     }
-    
-    //MARK: - Equal Algorithms
     
     @objc func labelSwiped() {
         if !mainViewModel.operandBufferIsEmpty() {
@@ -122,17 +130,6 @@ class MainViewController: UIViewController {
         
         self.present(logTableVC, animated: true)
     }
-   
-    public func updateResultLabel() {
-        self.inputLabel.text = mainViewModel.getOperandBuffer()
-        self.logLabel.text = mainViewModel.getLogBuffer()
-    }
-    
-}
-
-//MARK: - Action
-
-extension MainViewController {
     
     @objc public func clickOperatorButton(_ sender: UIButton) {
         switch sender {
