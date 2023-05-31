@@ -9,13 +9,104 @@ import RxSwift
 import UIKit
 
 class MainViewModel {
+    typealias Output = Observable<State>
     
     var calcModel = CalcModel()
-    //let updateResult = PublishSubject<CalcModel>()
+  
+    //MARK: - RxSwift Logic
     
-    init() {
-        
+    struct Input {
+        let swipeLabel = PublishSubject<Void>()
+        let selectNumber = PublishSubject<(UIButton, String)>()
+        let selectAC = PublishSubject<Void>()
+        let selectOperator = PublishSubject<Void>()
+        let selectEquals = PublishSubject<Void>()
     }
+    
+    enum State {
+        case eraseNumber
+        case appendBuffer
+        case initBuffer
+        case showResult
+    }
+    
+    func transform(input: Input) -> Output {
+       
+        let swipLabel = swipeLabelStream(input)
+        let selectNumber = selectNumberStream(input)
+        let selectAC = selectACStream(input)
+        let selectOperator = selectOperatorStream(input)
+        let selectEquals = selectEqualsStream(input)
+        
+        return Observable.merge(swipLabel, selectNumber, selectAC, selectOperator, selectEquals)
+    }
+    
+    func swipeLabelStream(_ input: Input) -> Output {
+        input.swipeLabel
+            .map { [weak self] Void -> State in
+                if (self?.operandBufferIsEmpty() != nil) {
+                    self?.removeLastOperandBuffer()
+                    self?.removeLastLogBuffer()
+                }
+                
+                return .eraseNumber
+            }
+            .asObservable()
+    }
+    
+    func selectNumberStream(_ input: Input) -> Output {
+        input.selectNumber
+            .map { [weak self] (str, item) -> State in
+                if self?.isFirstNum() == true { self!.setOperandBufferDefault() }
+                self?.setIsFirstNum(state: false)
+                self?.appendOperandBuffer(item)
+                self?.appendLogBuffer(item)
+                
+                return .appendBuffer
+            }.asObservable()
+    }
+    
+    func selectACStream(_ input: Input) -> Output {
+        input.selectAC
+            .map { [weak self] Void -> State in
+                self?.setOperandBufferDefault()
+                self?.setLogBufferDefault()
+                self?.setIsShowResult(state: false)
+                self?.setIsFirstNum(state: false)
+                
+                return .initBuffer
+            }.asObservable()
+    }
+    
+    func selectOperatorStream(_ input: Input) -> Output {
+        input.selectOperator
+            .map { [weak self] Void -> State in
+                self?.setOperandBufferDefault()
+                self?.setIsShowResult(state: false)
+                
+                return .appendBuffer
+            }.asObservable()
+    }
+    
+    //UI작업은 VC로 옮길 것
+    func selectEqualsStream(_ input: Input) -> Output {
+        input.selectEquals
+            .map { [weak self] Void -> State in
+                self?.setResultValue(value: self?.calculate() ?? 0)
+                
+                if self?.isShowResult() == false {
+                    self?.appendLogBuffer(" = \(String(describing: self?.getResultValue() ?? 0))")
+                }
+                
+                self?.MASaveCoreData()
+                
+                self?.setIsShowResult(state: true)
+                
+                return .showResult
+            }
+    }
+    
+    //MARK: - DefaultOperator
     
     public func setOperandBufferDefault() {
         calcModel.operandBuffer = ""
@@ -32,7 +123,7 @@ class MainViewModel {
     public func getLogBuffer() -> String {
         return calcModel.logBuffer
     }
-    
+        
     public func appendOperandBuffer(_ item: String) {
         calcModel.operandBuffer.append(item)
     }
@@ -51,6 +142,30 @@ class MainViewModel {
     
     public func operandBufferIsEmpty() -> Bool {
         return calcModel.operandBuffer.isEmpty
+    }
+    
+    public func isFirstNum() -> Bool {
+        return calcModel.isFirstNum
+    }
+    
+    public func isShowResult() -> Bool {
+        return calcModel.isShowResult
+    }
+    
+    public func setIsFirstNum(state: Bool) {
+        calcModel.isFirstNum = state
+    }
+    
+    public func setIsShowResult(state: Bool) {
+        calcModel.isShowResult = state
+    }
+    
+    public func setResultValue(value: Double) {
+        calcModel.resultValue = value
+    }
+    
+    public func getResultValue() -> Double {
+        return calcModel.resultValue ?? 0.0
     }
     
     //MARK: - Calculator Logic

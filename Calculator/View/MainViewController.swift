@@ -37,9 +37,9 @@ class MainViewController: UIViewController {
     
     //---------- Calc Value --------------
     let mainViewModel = MainViewModel()
-    var resultValue: Double?
-    var isShowResult: Bool = false
-    var isFirstNum: Bool = true
+    
+    lazy var input = MainViewModel.Input()
+    private var disposeBag = DisposeBag()
     
     //MARK: - LifeCycle
     
@@ -57,7 +57,22 @@ class MainViewController: UIViewController {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(labelSwiped))
              inputLabel.addGestureRecognizer(swipeGesture)
              inputLabel.isUserInteractionEnabled = true
+        
+        //---------------------------------------------------------
+        //Input Ouput Pattern
+        let output = mainViewModel.transform(input: input)
+        output.subscribe(onNext: { [weak self] state in
+            switch state {
+            case .eraseNumber, .appendBuffer, .initBuffer:
+                self?.updateResultLabel()
+            case .showResult:
+                self?.inputLabel.text = "\(String(describing: self?.mainViewModel.getResultValue() ?? 0))"
+                self?.logLabel.text = self?.mainViewModel.getLogBuffer()
+            }
+        }).disposed(by: disposeBag)
     }
+    
+    //MARK: - UISetting
     
     public func updateResultLabel() {
         self.inputLabel.text = mainViewModel.getOperandBuffer()
@@ -92,42 +107,23 @@ extension MainViewController {
     }
     
     @objc func clickAC() {
-        mainViewModel.setOperandBufferDefault()
-        mainViewModel.setLogBufferDefault()
-        self.isShowResult = false
-        self.isFirstNum = false
-        self.updateResultLabel()
+        input.selectAC.onNext(Void())
     }
     
     @objc func equalsClick() {
-        self.resultValue = mainViewModel.calculate()
+        input.selectEquals.onNext(Void())
         
-        self.inputLabel.text = "\(String(describing: self.resultValue ?? 0))"
-        
-        if !isShowResult {
-            mainViewModel.appendLogBuffer(" = \(String(describing: self.resultValue ?? 0))")
-        }
-        
-        mainViewModel.MASaveCoreData()
-        
-        self.isShowResult = true
-        self.logLabel.text = mainViewModel.getLogBuffer()
-        mainViewModel.setOperandBufferDefault()
-        mainViewModel.setLogBufferDefault()
+        //아래 두 함수는 가장 마지막에 호출시킬것
+        self.mainViewModel.setOperandBufferDefault()
+        self.mainViewModel.setLogBufferDefault()
     }
     
     @objc func labelSwiped() {
-        if !mainViewModel.operandBufferIsEmpty() {
-            mainViewModel.removeLastOperandBuffer()
-            mainViewModel.removeLastLogBuffer()
-            self.updateResultLabel()
-            print("called labelSwiped")
-        }
+        input.swipeLabel.onNext(Void())
     }
     
     @objc func showLogTable() {
         let logTableVC = CalcLogTableViewController()
-        
         self.present(logTableVC, animated: true)
     }
     
@@ -148,9 +144,7 @@ extension MainViewController {
             break
         }
         
-        self.mainViewModel.setOperandBufferDefault()
-        self.isShowResult = false
-        self.updateResultLabel()
+        input.selectOperator.onNext(Void())
     }
     
     @objc public func clickDotButton() {
@@ -159,40 +153,36 @@ extension MainViewController {
     }
     
     @objc public func clickButton(_ sender: UIButton) {
-        var item = ""
-        switch sender{
-        case numButtons[10]:
-            item = "00"
-        case numButtons[0]:
-            item = "0"
-        case numButtons[1]:
-            item = "1"
-        case numButtons[2]:
-            item = "2"
-        case numButtons[3]:
-            item = "3"
-        case numButtons[4]:
-            item = "4"
-        case numButtons[5]:
-            item = "5"
-        case numButtons[6]:
-            item = "6"
-        case numButtons[7]:
-            item = "7"
-        case numButtons[8]:
-            item = "8"
-        case numButtons[9]:
-            item = "9"
-        default:
-            print("예외값이 inputBuffer에 입력됨")
-            break
-        }
-
-        if self.isFirstNum {mainViewModel.setOperandBufferDefault()}
-        self.isFirstNum = false
-        mainViewModel.appendOperandBuffer(item)
-        mainViewModel.appendLogBuffer(item)
-        self.updateResultLabel()
+                var item = ""
+        
+                switch sender {
+                case numButtons[10]:
+                    item = "00"
+                case numButtons[0]:
+                    item = "0"
+                case numButtons[1]:
+                    item = "1"
+                case numButtons[2]:
+                    item = "2"
+                case numButtons[3]:
+                    item = "3"
+                case numButtons[4]:
+                    item = "4"
+                case numButtons[5]:
+                    item = "5"
+                case numButtons[6]:
+                    item = "6"
+                case numButtons[7]:
+                    item = "7"
+                case numButtons[8]:
+                    item = "8"
+                case numButtons[9]:
+                    item = "9"
+                default:
+                    print("예외값이 inputBuffer에 입력됨")
+                    break
+                }
+        input.selectNumber.onNext((sender, item))
     }
     
 }

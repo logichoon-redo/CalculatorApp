@@ -11,6 +11,8 @@ struct CalcModel {
     
     var logBuffer: String = ""
     var operandBuffer: String = "0"
-    
+    var isFirstNum: Bool = true
+    var isShowResult: Bool = false
+    var resultValue: Double?
     
 }
