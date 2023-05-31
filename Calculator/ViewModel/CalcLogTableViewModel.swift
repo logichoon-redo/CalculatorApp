@@ -8,9 +8,6 @@
 import Foundation
 import CoreData
 
-//enum LogValueError: Error {
-//    case ValueIsNil
-//}
 
 class CalcLogTableViewModel {
     

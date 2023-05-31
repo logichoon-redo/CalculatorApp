@@ -13,7 +13,6 @@ class MainViewController: UIViewController {
 
     //MARK: - Properties
     
-    //view객체들
     var logSignLabel = UIButton()
     var logLabel = UILabel()
     var inputLabel = UILabel()
@@ -35,11 +34,12 @@ class MainViewController: UIViewController {
     var dotButton = UIButton()
     var equalButton = UIButton()
     
-    //---------- Calc Value --------------
-    let mainViewModel = MainViewModel()
+    var swipeGesture: UISwipeGestureRecognizer?
     
+    let mainViewModel = MainViewModel()
     lazy var input = MainViewModel.Input()
     private var disposeBag = DisposeBag()
+    lazy var output = mainViewModel.transform(input: self.input)
     
     //MARK: - LifeCycle
     
@@ -54,25 +54,28 @@ class MainViewController: UIViewController {
         //setAction
         self.setTargetAction()
         
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(labelSwiped))
-             inputLabel.addGestureRecognizer(swipeGesture)
-             inputLabel.isUserInteractionEnabled = true
-        
-        //---------------------------------------------------------
-        //Input Ouput Pattern
-        let output = mainViewModel.transform(input: input)
-        output.subscribe(onNext: { [weak self] state in
+        //rxSwift OutputObservable
+        self.bind()
+    }
+    
+    //MARK: - UISetting
+    
+    private func bind() {
+        output
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] state in
             switch state {
             case .eraseNumber, .appendBuffer, .initBuffer:
                 self?.updateResultLabel()
             case .showResult:
                 self?.inputLabel.text = "\(String(describing: self?.mainViewModel.getResultValue() ?? 0))"
                 self?.logLabel.text = self?.mainViewModel.getLogBuffer()
+            case .showPresent:
+                let logTableVC = CalcLogTableViewController()
+                self?.present(logTableVC, animated: true)
             }
         }).disposed(by: disposeBag)
     }
-    
-    //MARK: - UISetting
     
     public func updateResultLabel() {
         self.inputLabel.text = mainViewModel.getOperandBuffer()
@@ -86,6 +89,11 @@ class MainViewController: UIViewController {
 extension MainViewController {
     
     fileprivate func setTargetAction() {
+        //SwipeGesture
+        swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(labelSwiped))
+        inputLabel.addGestureRecognizer(swipeGesture!)
+        inputLabel.isUserInteractionEnabled = true
+        
         //numbers
         _=(0...10).map {
             self.numButtons[$0].addTarget(self, action: #selector(clickButton(_: )), for: .touchUpInside)
@@ -107,24 +115,22 @@ extension MainViewController {
     }
     
     @objc func clickAC() {
-        input.selectAC.onNext(Void())
+        input.selectAC.onNext(())
     }
     
     @objc func equalsClick() {
-        input.selectEquals.onNext(Void())
+        input.selectEquals.onNext(())
         
-        //아래 두 함수는 가장 마지막에 호출시킬것
         self.mainViewModel.setOperandBufferDefault()
         self.mainViewModel.setLogBufferDefault()
     }
     
     @objc func labelSwiped() {
-        input.swipeLabel.onNext(Void())
+        input.swipeLabel.onNext(())
     }
     
     @objc func showLogTable() {
-        let logTableVC = CalcLogTableViewController()
-        self.present(logTableVC, animated: true)
+        input.selectLog.onNext(())
     }
     
     @objc public func clickOperatorButton(_ sender: UIButton) {
@@ -144,12 +150,11 @@ extension MainViewController {
             break
         }
         
-        input.selectOperator.onNext(Void())
+        input.selectOperator.onNext(())
     }
     
     @objc public func clickDotButton() {
-        mainViewModel.appendOperandBuffer(".")
-        mainViewModel.appendLogBuffer(".")
+        input.selectDote.onNext(())
     }
     
     @objc public func clickButton(_ sender: UIButton) {

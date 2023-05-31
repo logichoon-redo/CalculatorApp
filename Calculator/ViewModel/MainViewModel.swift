@@ -21,6 +21,8 @@ class MainViewModel {
         let selectAC = PublishSubject<Void>()
         let selectOperator = PublishSubject<Void>()
         let selectEquals = PublishSubject<Void>()
+        let selectDote = PublishSubject<Void>()
+        let selectLog = PublishSubject<Void>()
     }
     
     enum State {
@@ -28,6 +30,7 @@ class MainViewModel {
         case appendBuffer
         case initBuffer
         case showResult
+        case showPresent
     }
     
     func transform(input: Input) -> Output {
@@ -37,14 +40,23 @@ class MainViewModel {
         let selectAC = selectACStream(input)
         let selectOperator = selectOperatorStream(input)
         let selectEquals = selectEqualsStream(input)
+        let selectDote = selectDoteStream(input)
+        let selectLog = selectLogStream(input)
         
-        return Observable.merge(swipLabel, selectNumber, selectAC, selectOperator, selectEquals)
+        return Observable
+            .merge(swipLabel,
+                   selectNumber,
+                   selectAC,
+                   selectOperator,
+                   selectEquals,
+                   selectDote,
+                   selectLog)
     }
     
     func swipeLabelStream(_ input: Input) -> Output {
         input.swipeLabel
-            .map { [weak self] Void -> State in
-                if (self?.operandBufferIsEmpty() != nil) {
+            .map { [weak self] _ -> State in
+                if self?.operandBufferIsEmpty() == false {
                     self?.removeLastOperandBuffer()
                     self?.removeLastLogBuffer()
                 }
@@ -68,7 +80,7 @@ class MainViewModel {
     
     func selectACStream(_ input: Input) -> Output {
         input.selectAC
-            .map { [weak self] Void -> State in
+            .map { [weak self] _ -> State in
                 self?.setOperandBufferDefault()
                 self?.setLogBufferDefault()
                 self?.setIsShowResult(state: false)
@@ -80,7 +92,7 @@ class MainViewModel {
     
     func selectOperatorStream(_ input: Input) -> Output {
         input.selectOperator
-            .map { [weak self] Void -> State in
+            .map { [weak self] _ -> State in
                 self?.setOperandBufferDefault()
                 self?.setIsShowResult(state: false)
                 
@@ -88,10 +100,19 @@ class MainViewModel {
             }.asObservable()
     }
     
-    //UI작업은 VC로 옮길 것
+    func selectDoteStream(_ input: Input) -> Output {
+        input.selectDote
+            .map { [weak self] _ -> State in
+                self?.appendOperandBuffer(".")
+                self?.appendLogBuffer(".")
+                
+                return .appendBuffer
+            }.asObservable()
+    }
+    
     func selectEqualsStream(_ input: Input) -> Output {
         input.selectEquals
-            .map { [weak self] Void -> State in
+            .map { [weak self] _ -> State in
                 self?.setResultValue(value: self?.calculate() ?? 0)
                 
                 if self?.isShowResult() == false {
@@ -103,7 +124,14 @@ class MainViewModel {
                 self?.setIsShowResult(state: true)
                 
                 return .showResult
-            }
+            }.asObservable()
+    }
+    
+    func selectLogStream(_ item: Input) -> Output {
+        item.selectLog
+            .map { _ -> State in
+                    .showPresent
+            }.asObservable()
     }
     
     //MARK: - DefaultOperator

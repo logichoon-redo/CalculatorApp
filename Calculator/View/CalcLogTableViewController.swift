@@ -32,10 +32,6 @@ class CalcLogTableViewController: UITableViewController {
         calcLogViewModel.fetchData()
         self.tableView.reloadData()
     }
-    
-    //MARK: - Care Data
-    
-    
 
     // MARK: - Table view data source
 
